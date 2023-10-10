@@ -1,8 +1,9 @@
 const mongodb = require("mongodb");
 const http = require("http");
+const env = require('dotenv');
+env.config()
 
-const databaseConnection =
-  "mongodb+srv://andy:bav52w6vfTXIq5Cy@cluster0.4ahexgk.mongodb.net/Papays";
+const databaseConnection =process.env.MONGODB_URL;
 
 mongodb.connect(
   databaseConnection,
