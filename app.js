@@ -3,7 +3,6 @@ const app = express();
 const router = require("./routes");
 
 //MongoDB
-const db = require("./server").db();
 
 
 //1Kirish code
