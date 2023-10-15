@@ -18,6 +18,10 @@ const memberSchema = new mongoose.Schema(
     mb_phone: {
       type: String,
       required: true,
+      index: {
+        unique: true,
+        sparse: true,
+      },
     },
     mb_password: {
       type: String,
@@ -90,4 +94,4 @@ const memberSchema = new mongoose.Schema(
   { timestamps: true } //CreatedAt UpdatedAt
 );
 
-module.exports = mongoose.model("Member", memberSchema);
+module.exports = mongoose.model("Members", memberSchema);
