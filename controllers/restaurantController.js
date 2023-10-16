@@ -1,4 +1,7 @@
+const Member = require("../models/Member");
 const restaurantController = module.exports;
+
+
 
 restaurantController.getSignupMyRestaurant = async (req, res) => {
   try {
@@ -11,7 +14,12 @@ restaurantController.getSignupMyRestaurant = async (req, res) => {
 };
 restaurantController.signupProcess = async (req, res) => {
   try {
-    res.remder('signup')
+    console.log('POST: const/signup')
+    const new_member = new Member();
+    const result =await new_member.signupData(req.body);
+
+    res.json({state:"Succeed", data:result})
+
   } catch (err) {
     console.log("ERROR: cont/signup", err);
     res.json({ state: "fail", message: err.message });
@@ -29,7 +37,12 @@ restaurantController.getLoginMyRestaurant = async (req, res) => {
 };
 restaurantController.loginProcess = async (req, res) => {
   try {
-    res.render('login-page')
+    console.log('POST: const/signup')
+    const new_member = new Member();
+    const result =await new_member.loginData(req.body);
+
+    res.json({state:"Succeed", data:result})
+
   } catch (err) {
     console.log("ERROR: cont/signup", err);
     res.json({ state: "fail", message: err.message });
