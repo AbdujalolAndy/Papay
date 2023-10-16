@@ -23,7 +23,7 @@ class Member {
       const lengthPassword = result.mb_password.length;
       let secret_password = "";
       for (let i = 0; i < lengthPassword; i++) {
-        secret_password += "*";
+        secret_password += "x";
       }
       result.mb_password = secret_password;
       console.log(result);
@@ -42,7 +42,10 @@ class Member {
       );
       assert.ok(member, Definer.auth_err3);
 
-      const isMatch = bcrypt.compare(input.mb_password, member.mb_password);
+      const isMatch = await bcrypt.compare(
+        input.mb_password,
+        member.mb_password
+      ); // Corrected the arguments
       assert.ok(isMatch, Definer.auth_err4);
       console.log("member:::", member);
       return await this.memberModel.findOne({ mb_nick: input.mb_nick });

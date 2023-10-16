@@ -1,6 +1,9 @@
 const router = require("express").Router();
 const memberController = require("./controllers/memberController");
 
+/*************************
+ *      Restful API      *
+ *************************/
 //Member Controller
 router.post("/signup", memberController.signup);
 router.post("/login", memberController.login);
