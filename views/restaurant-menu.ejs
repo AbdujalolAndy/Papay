@@ -1,0 +1,13 @@
+<%-include('includes/header')%>
+<body>
+    <h1>My Retaurant page</h1>
+    <% if(!member) { %>
+        <h2>Siz authenticated emassiz</h2>
+    <% } else {%>
+        <h1>
+            Siz authenticated bo'lgansiz, va sizning nickingiz <%-member.mb_nick%>
+            <p>Sizning tel raqamingiz <%-member.mb_phone%></p>
+        </h1>
+    <% } %>
+</body>
+<%-include('includes/footer')%>

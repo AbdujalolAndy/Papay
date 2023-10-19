@@ -20,12 +20,7 @@ class Member {
         console.log(err.message);
         throw new Error(Definer.auth_err1);
       }
-      const lengthPassword = result.mb_password.length;
-      let secret_password = "";
-      for (let i = 0; i < lengthPassword; i++) {
-        secret_password += "x";
-      }
-      result.mb_password = secret_password;
+      result.mb_password = "";
       console.log(result);
       return result;
     } catch (err) {
