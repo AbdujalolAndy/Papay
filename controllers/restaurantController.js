@@ -66,6 +66,20 @@ restaurantController.logout = (req, res) => {
   req.send("You are loged out");
 };
 
+restaurantController.validateAuthRestaurant = async (req, res, next) => {
+  try {
+    if (req.session.member.mb_type == "RESTAURANT") {
+      req.member = req.session.member;
+      next();
+    }
+  } catch (err) {
+    res.json({
+      state: "fail",
+      message: "only authenticated members with restaurant type",
+    });
+  }
+};
+
 restaurantController.checkSessions = (req, res) => {
   if (req.session.member) {
     res.json({ state: "succeed", data: req.session.member });
