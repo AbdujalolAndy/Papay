@@ -14,7 +14,7 @@ const productSchema = new Schema(
     },
     product_collection: {
       type: String,
-      requiredtrue,
+      required: true,
       enum: {
         values: product_collection_enums,
         message: "{VALUE} is not among permitted enum values",
@@ -50,7 +50,7 @@ const productSchema = new Schema(
       },
       enum: {
         values: product_size_enums,
-        c,
+        message: "{VALUE} is not among permitted enum values",
       },
     },
     product_volume: {
@@ -68,9 +68,9 @@ const productSchema = new Schema(
       type: String,
       required: true,
     },
-    product_image: {
+    product_images: {
       type: Array,
-      required: false,
+      required: true,
       default: [],
     },
     product_likes: {

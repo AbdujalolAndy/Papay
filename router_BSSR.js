@@ -23,6 +23,7 @@ router_bssr.post(
   upload_products.array("product_images", 5),
   productController.addNewProduct
 );
+
 router_bssr.post("/products/edit/:id", productController.updateChosenProduct);
 
 module.exports = router_bssr;
