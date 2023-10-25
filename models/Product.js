@@ -8,6 +8,19 @@ class Product {
     this.productModel = productSchema;
   }
 
+  async getAllProductsDataResto(member) {
+    try {
+      member._id = shapeIntoMonngooseObjectId(member._id);
+      const result = await this.productModel.find({
+        restaurant_mb_id: member._id,
+      });
+      assert.ok(result, Definer.general_err1);
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
+
   async addNewProduct(data, member) {
     try {
       data.restaurant_mb_id = shapeIntoMonngooseObjectId(member._id);
@@ -19,6 +32,7 @@ class Product {
       assert.ok(result, Definer.product_err1);
       return result;
     } catch (err) {
+      throw err;
       console.log(`ERROR, cont/addNewProduct, ${err.message}`);
     }
   }
@@ -34,11 +48,11 @@ class Product {
         })
         .exec();
 
-        assert.ok(result, Definer.general_err1);
-        return result
+      assert.ok(result, Definer.general_err1);
+      return result;
     } catch (err) {
       console.log(`ERROR, cont/addNewProduct, ${err.message}`);
-      throw err
+      throw err;
     }
   }
 }

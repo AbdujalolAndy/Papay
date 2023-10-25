@@ -16,7 +16,7 @@ router_bssr
 
 router_bssr.get("/check-me", restaurantController.checkSessions);
 router_bssr.get("/logout", restaurantController.logout);
-router_bssr.get("/products/menu", restaurantController.getMyRestaurantData);
+router_bssr.get("/products/menu", restaurantController.getMyRestaurantProducts);
 router_bssr.post(
   "/products/create",
   restaurantController.validateAuthRestaurant,
@@ -24,6 +24,10 @@ router_bssr.post(
   productController.addNewProduct
 );
 
-router_bssr.post("/products/edit/:id",restaurantController.validateAuthRestaurant, productController.updateChosenProduct);
+router_bssr.post(
+  "/products/edit/:id",
+  restaurantController.validateAuthRestaurant,
+  productController.updateChosenProduct
+);
 
 module.exports = router_bssr;
