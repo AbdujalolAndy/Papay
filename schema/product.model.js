@@ -35,7 +35,7 @@ const productSchema = new Schema(
     },
     product_discount: {
       type: Number,
-      required: true,
+      required: false,
     },
     product_left_cnt: {
       type: Number,

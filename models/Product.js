@@ -33,7 +33,6 @@ class Product {
       return result;
     } catch (err) {
       throw err;
-      console.log(`ERROR, cont/addNewProduct, ${err.message}`);
     }
   }
   async updateChosenProductData(id, updated_data, mb_id) {
@@ -51,7 +50,6 @@ class Product {
       assert.ok(result, Definer.general_err1);
       return result;
     } catch (err) {
-      console.log(`ERROR, cont/addNewProduct, ${err.message}`);
       throw err;
     }
   }
