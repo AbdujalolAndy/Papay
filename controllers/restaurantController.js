@@ -35,14 +35,14 @@ restaurantController.getSignupMyRestaurant = async (req, res) => {
 };
 restaurantController.signupProcess = async (req, res) => {
   try {
-    console.log("POST: const/signup");
+    console.log("POST: const/signupProcess");
     const new_member = new Member();
     const result = await new_member.signupData(req.body);
 
     req.session.member = result;
     res.redirect("/resto/products/menu");
   } catch (err) {
-    console.log("ERROR: cont/signup", err);
+    console.log("ERROR: cont/signupProcess", err);
     res.json({ state: "fail", message: err.message });
   }
 };
@@ -58,16 +58,18 @@ restaurantController.getLoginMyRestaurant = async (req, res) => {
 };
 restaurantController.loginProcess = async (req, res) => {
   try {
-    console.log("POST: const/signup");
+    console.log("POST: const/loginProcess");
     const new_member = new Member();
     const result = await new_member.loginData(req.body);
 
     req.session.member = result;
     req.session.save(() => {
-      res.redirect("/resto/products/menu");
+      result.mb_type == "ADMIN"
+        ? res.redirect("/resto/all-restaurant")
+        : res.redirect("/resto/products/menu");
     });
   } catch (err) {
-    console.log("ERROR: cont/login", err);
+    console.log("ERROR: cont/loginProcess", err);
     res.json({ state: "fail", message: err.message });
   }
 };
