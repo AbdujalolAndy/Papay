@@ -30,7 +30,6 @@ class Member {
 
   async loginData(input) {
     try {
-      console.log("POST: const/login");
       const member = await this.memberModel.findOne(
         { mb_nick: input.mb_nick },
         { mb_nick: 1, mb_password: 1 }
@@ -42,7 +41,6 @@ class Member {
         member.mb_password
       ); // Corrected the arguments
       assert.ok(isMatch, Definer.auth_err4);
-      console.log("member:::", member);
       return await this.memberModel.findOne({ mb_nick: input.mb_nick });
     } catch (err) {
       throw err;
