@@ -16,7 +16,7 @@ restaurantController.getMyRestaurantProducts = async (req, res) => {
   try {
     console.log("GET: cont/getMyRestaurantData");
     const product = new Product();
-    const data = await product.getAllProductsDataResto(res.locals.member);
+    const data = await product.getAllProductsDataResto(req.member);
     res.render("restaurant-menu", { restaurant_data: data });
   } catch (err) {
     console.log("ERROR: cont/getMyRestaurantData", err.message);
