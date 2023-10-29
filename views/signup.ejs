@@ -1,7 +1,7 @@
 <%-include('includes/header')%>
 <link rel="stylesheet" href="/CSS/login.css" type="text/css">
 <body>
-    <form class="login_container" method="POST" action="/resto/sign-up" enctype="multipart/form-data">
+    <form class="login_container" onsubmit="return validateSignUpForm()" method="POST" action="/resto/sign-up" enctype="multipart/form-data">
         <div class="login_frame" style="width: 650px; height: 730px;">
 
             <div class="login_top">
@@ -27,6 +27,7 @@
                     type="text"
                     name="mb_nick"
                     placeholder="Foydalanuvchining ismi"
+                    class="mb_nick"
                     value=""
                     required
                     >
@@ -38,6 +39,7 @@
                     type="text"
                     name="mb_phone"
                     placeholder="Telefon raqam"
+                    class="mb_phone"
                     value=""
                     required
                     >
@@ -54,6 +56,7 @@
                     type="password"
                     name="mb_password"
                     placeholder="Passwordni kiriting"
+                    class="mb_password"
                     value=""
                     required
                     >
@@ -64,6 +67,7 @@
                     <input 
                     type="password"
                     name="mb_confirm_password"
+                    class="mb_confirm_password"
                     placeholder="Passwordni tasdiqlash"
                     value=""
                     required
@@ -103,4 +107,59 @@
         </div>
     </form>
 </body>
+<script>
+$(function () {
+  let fileTarget = $(".filebox .upload-hidden");
+  let filename = " ";
+  fileTarget.on("change", function () {
+    if (window.FileReader) {
+      const uploading_file = $(this)[0].files[0];
+      const fileType = uploading_file["type"];
+      const validImageTypes = ["image/jpg", "image/jpeg", "image/png"];
+      if (!validImageTypes.includes(fileType)) {
+        alert(
+          "Iltimos ruhsat etilgan formatdagi rasmlarni yuklang: jpg, jpeg va png!"
+        );
+      } else {
+        if (uploading_file) {
+          console.log(URL.createObjectURL(uploading_file));
+          $(".upload_img_frame")
+            .attr("src", URL.createObjectURL(uploading_file))
+            .addClass("success");
+        }
+        filename = $(this)[0].files[0].name;
+      }
+    }
+
+    $(this).siblings(".upload-name").val(filename);
+  });
+});
+
+function validateSignUpForm() {
+  const mb_nick = $(".mb_nick").val();
+  const mb_password = $(".mb_password").val();
+  const mb_phone = $(".mb_phone").val();
+  const mb_confirm_password = $(".mb_confirm_password").val();
+  const restaurant_img = $(".restaurant_img").get(0).files[0] ?? null;
+
+  if (
+    mb_nick == "" ||
+    mb_password == "" ||
+    mb_phone == "" ||
+    mb_confirm_password == ""
+  ) {
+    alert("Iltimos hamma so'ro'vlarni to'ldiring!");
+    return false;
+  } else if (mb_password !== mb_confirm_password) {
+    alert(`iltimos passwordni qaytadan to'g'ri kiriting!`);
+    return false;
+  }
+
+  if (!restaurant_img) {
+    alert("Iltimos rasmni yuklang!");
+    return false;
+  }
+  return true;
+}
+</script>
 <%-include('includes/footer')%>
