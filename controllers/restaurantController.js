@@ -41,14 +41,13 @@ restaurantController.signupProcess = async (req, res) => {
     assert(req.file, Definer.general_err3);
 
     const new_member = req.body;
-    new_member.mb_type="RESTAURANT";
+    new_member.mb_type = "RESTAURANT";
     new_member.mb_image = req.file.path;
-
 
     const member = new Member();
     const result = await member.signupData(new_member);
     assert(result, Definer.general_err1);
-    
+
     req.session.member = result;
     res.redirect("/resto/products/menu");
   } catch (err) {
@@ -87,8 +86,9 @@ restaurantController.loginProcess = async (req, res) => {
 restaurantController.logout = async (req, res) => {
   try {
     console.log("GET: cont/logout");
-    delete req.session.member;
-    res.redirect("/resto");
+    req.session.destroy(() => {
+      res.redirect("/resto");
+    });
   } catch (err) {
     console.log("GET: cont/logout");
     res.json({ state: "fail", message: err.message });
