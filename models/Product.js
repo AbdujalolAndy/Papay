@@ -24,11 +24,10 @@ class Product {
   async addNewProduct(data, member) {
     try {
       data.restaurant_mb_id = shapeIntoMonngooseObjectId(member._id);
-      console.log(data);
 
       const new_product = new this.productModel(data);
       const result = await new_product.save();
-      console.log(result);
+
       assert.ok(result, Definer.product_err1);
       return result;
     } catch (err) {
