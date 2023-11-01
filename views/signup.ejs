@@ -153,9 +153,7 @@ function validateSignUpForm() {
   } else if (mb_password !== mb_confirm_password) {
     alert(`iltimos passwordni qaytadan to'g'ri kiriting!`);
     return false;
-  }
-
-  if (!restaurant_img) {
+  } else if (!restaurant_img) {
     alert("Iltimos rasmni yuklang!");
     return false;
   }

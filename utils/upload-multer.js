@@ -8,7 +8,6 @@ const getTargetImageStorage = (address) => {
       cb(null, `./uploads/${address}`);
     },
     filename: (req, file, cb) => {
-      console.log(file);
       const extention = path.parse(file.originalname).ext;
       const randomName = uuid.v4() + extention;
       cb(null, randomName);
