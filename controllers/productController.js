@@ -32,7 +32,7 @@ productController.addNewProduct = async (req, res) => {
     const result = await product.addNewProduct(data, req.member);
     const html = `<script>
                   alert("new product added successfully");
-                  window.location.replace('/resto/projects/menu');
+                  window.location.replace("/resto/products/menu");
                   </script>`;
     res.end(html);
   } catch (err) {
@@ -50,10 +50,10 @@ productController.updateChosenProduct = async (req, res) => {
       req.body,
       req.member._id
     );
-    
+
     await res.json({ state: "success", data: result });
   } catch (err) {
     console.log("Error: cont/updateChosenProduct, ", err.message);
-    res.json({ state: "fail", message: err.message})
+    res.json({ state: "fail", message: err.message });
   }
 };
