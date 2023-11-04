@@ -135,7 +135,6 @@ restaurantController.updateRestaurantByAdmin = async(req, res)=>{
     const restaurant = new Restaurant();
     const result = await restaurant.updateRestaurantByAdmin(new_data);
     await res.json({state:"sucess", data:result})
-
   }catch(err){
     console.log("ERROR: cont/updateRestaurantByAdmin")
   }

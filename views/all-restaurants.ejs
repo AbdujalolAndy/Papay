@@ -31,7 +31,7 @@
                                     <th scope="col">Oshhona Nomi</th>
                                     <th scope="col">Oshhona Telfon Raqami</th>
                                     <th scope="col">Oshhona Top</th>
-                                    <th scope="col">Oshhona Hollati</th>
+                                    <th scope="col">Oshhona Holati</th>
                                 </tr>
                             </thead>
 
@@ -85,7 +85,28 @@
                                 }
                             })
                              .catch((err)=>console.log(err.message));
-                    })
+                    });
+
+                    //munipulate restaurants member status features
+                    $(".mb_status").on("change", (event) => {
+                        const id = event.target.id;
+                        const mb_status = $(`#${id}.mb_status`).val();
+                        console.log("mb_status:", mb_status)
+
+                        axios.post(`/resto/all-restaurants/edit`, {id: id, mb_status: mb_status,})
+                             .then(response =>{
+                                const result = response.data;
+                                console.log("result:", response.data);
+                                if(result.state == "sucess"){
+                                    alert("Successfully updated");
+                                }else{
+                                    alert(result.message);
+                                }
+                            })
+                             .catch((err)=>console.log(err.message));
+                    });
+
+                    
                 }
             )
         </script>
