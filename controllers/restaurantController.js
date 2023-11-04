@@ -128,6 +128,19 @@ restaurantController.getAllRestaurants = async (req, res) => {
   }
 };
 
+restaurantController.updateRestaurantByAdmin = async(req, res)=>{
+  try{
+    console.log("POST: cont/updateRestaurantByAdmin");
+    const new_data = req.body;
+    const restaurant = new Restaurant();
+    const result = await restaurant.updateRestaurantByAdmin(new_data);
+    await res.json({state:"sucess", data:result})
+
+  }catch(err){
+    console.log("ERROR: cont/updateRestaurantByAdmin")
+  }
+}
+
 restaurantController.validateAdmin = async (req, res, next) => {
   if (req.session?.member?.mb_type === "ADMIN") {
     req.member = req.session.member;

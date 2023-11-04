@@ -3,7 +3,6 @@
 
     <body>
         <div class="main_container">
-
             <div class="group_name">
                 <ul class="nav justify-content-center">
                     <li class="nav-item" style="cursor:pointer;">
@@ -68,7 +67,27 @@
             </div>
         </div>
         <script>
+            $(
+                function () {
+                    //munipulate restaurants top features
+                    $(".mb_top").on("change", (event) => {
+                        const id = event.target.id;
+                        const mb_top_status = event.target.checked ? "Y" : "N";
 
+                        axios.post(`/resto/all-restaurants/edit`, {id: id, mb_top: mb_top_status,})
+                             .then(response =>{
+                                const result = response.data;
+                                console.log("result:", response.data);
+                                if(result.state == "sucess"){
+                                    alert("Successfully updated");
+                                }else{
+                                    alert(result.message);
+                                }
+                            })
+                             .catch((err)=>console.log(err.message));
+                    })
+                }
+            )
         </script>
     </body>
-    <%-include("includes/footer")%>
+<%-include("includes/footer")%>
