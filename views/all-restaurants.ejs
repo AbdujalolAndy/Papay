@@ -1,5 +1,6 @@
 <%-include("includes/header")%>
     <link rel="stylesheet" href="/CSS/menu.css" type="text/css">
+
     <body>
         <div class="main_container">
 
@@ -17,15 +18,15 @@
                 </ul>
             </div>
 
-            <div class="restaurant_menu_frame">
+            <div class="restaurant_menu_frame" style="height: 100vh;">
                 <div class="restaurant_container">
                     <div class="resto_table">
                         <span class="new_dish_txt">
                             Barcha Oshhonalar Ro'yhati
                         </span>
 
-                        <table class="table table-sm table-hover">
-                            <thead class="thead-light">
+                        <table class="table table-sm table-hover ">
+                            <thead class="thead-light p-2">
                                 <tr class="thead-light">
                                     <th scope="col">T/r</th>
                                     <th scope="col">Oshhona Nomi</th>
@@ -36,26 +37,38 @@
                             </thead>
 
                             <tbody style="background-color: white;">
-                                <td><%- 1 %></td>
-                                <td>Texas De Brazil</td>
-                                <td>913071317983</td>
-                                <td style="width:13%;">
-                                    <label class="form-switch">
-                                        <input style="width:50px; padding: 10px;" class="form-check-input mb_top" type="checkbox" >
-                                    </label>
-                                </td >
-                                <td style="width:13%">
-                                    <select  class= "spec_select mb_status">
-                                        <option value="ONPAUSE">ONPAUSE</option>
-                                        <option value="ACTIVE">ACTIVE</option>
-                                        <option value="DELETED">DELETED</option>
-                                    </select>
-                                </td>
+                                <% restaurants_data.map((ele, index)=> { %>
+                                    <tr>
+                                        <td><%- index + 1 %></td>
+                                        <td><%- ele.mb_nick %></td>
+                                        <td><%- ele.mb_phone %></td>
+                                        <td style="width:13%;">
+                                            <label class="switch">
+                                                <input id="<%-ele._id%>" class="mb_top" type="checkbox" <%-
+                                                    ele.mb_top=="Y" ? 'checked' : '' %>>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </td>
+                                        <td style="width:13%">
+                                            <select id="<%-ele._id%>" class="spec_select mb_status">
+                                                <option value="ONPAUSE" <%- ele.mb_status==="ONPAUSE" ? 'selected' : ''
+                                                    %>>ONPAUSE</option>
+                                                <option value="ACTIVE" <%- ele.mb_status==="ACTIVE" ? 'selected' : '' %>
+                                                    >ACTIVE</option>
+                                                <option value="DELETED" <%- ele.mb_status==="DELETED" ? 'selected' : ''
+                                                    %>>DELETED</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <% }); %>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
+        <script>
+
+        </script>
     </body>
-<%-include("includes/footer")%>
+    <%-include("includes/footer")%>

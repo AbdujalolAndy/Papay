@@ -3,6 +3,7 @@ const Member = require("../models/Member");
 const restaurantController = module.exports;
 const Product = require("../models/Product");
 const assert = require("assert");
+const Restaurant = require("../models/Restaurant")
 
 restaurantController.home = async (req, res) => {
   try {
@@ -52,7 +53,11 @@ restaurantController.signupProcess = async (req, res) => {
     res.redirect("/resto/products/menu");
   } catch (err) {
     console.log("ERROR: cont/signupProcess", err);
-    res.json({ state: "fail", message: err.message });
+    const html = `<script>
+                    alert("DataBase  Error: Dublicated Restaurant!");
+                    window.location.replace("/resto/sign-up")  
+                  </script>`
+    res.end(html);
   }
 };
 
@@ -114,7 +119,9 @@ restaurantController.validateAuthRestaurant = async (req, res, next) => {
 restaurantController.getAllRestaurants = async (req, res) => {
   try {
     console.log("GET: cont/getAllRestaurants");
-    res.render("all-restaurants");
+    const restaurant = new Restaurant();
+    const restaurants_data = await restaurant.getRestaurantData();
+    res.render("all-restaurants", { restaurants_data});
   } catch (err) {
     console.log("ERROR: cont/getAllRestaurants");
     res.json({ state: "fail", message: err.message });
@@ -122,16 +129,15 @@ restaurantController.getAllRestaurants = async (req, res) => {
 };
 
 restaurantController.validateAdmin = async (req, res, next) => {
-  try {
-    if (req.session?.member?.mb_type === "ADMIN") {
-      req.member = req.session.member;
-      next();
-    } else {
-      throw err;
-    }
-  } catch (err) {
-    console.log("ERROR: cont/validateAdmin");
-    res.redirect("/resto");
+  if (req.session?.member?.mb_type === "ADMIN") {
+    req.member = req.session.member;
+    next();
+  } else {
+    const html = `<script>
+                    alert("Admin Page: Permission denied!");
+                    window.location.replace("/resto");
+                  </script>`;
+    res.end(html);
   }
 };
 
