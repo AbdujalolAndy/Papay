@@ -29,7 +29,7 @@ restaurantController.getMyRestaurantProducts = async (req, res) => {
 restaurantController.getSignupMyRestaurant = async (req, res) => {
   try {
     console.log("GET: cont/getSignupMyRestaurant");
-    res.render("signup");
+    res.render("sign-up");
   } catch (err) {
     console.log("ERROR: cont/getSignupMyRestaurant", err.message);
     res.json({ state: "fail", message: err.message });
@@ -74,7 +74,7 @@ restaurantController.loginProcess = async (req, res) => {
     req.session.member = result;
     req.session.save(() => {
       result.mb_type == "ADMIN"
-        ? res.redirect("/resto/all-restaurant")
+        ? res.redirect("/resto/all-restaurants")
         : res.redirect("/resto/products/menu");
     });
   } catch (err) {
@@ -99,13 +99,39 @@ restaurantController.validateAuthRestaurant = async (req, res, next) => {
   try {
     if (req.session?.member?.mb_type == "RESTAURANT") {
       req.member = req.session.member;
+      next();
+    } else {
+      throw err;
     }
-    next();
   } catch (err) {
     res.json({
       state: "fail",
       message: "only authenticated members with restaurant type",
     });
+  }
+};
+
+restaurantController.getAllRestaurants = async (req, res) => {
+  try {
+    console.log("GET: cont/getAllRestaurants");
+    res.render("all-restaurants");
+  } catch (err) {
+    console.log("ERROR: cont/getAllRestaurants");
+    res.json({ state: "fail", message: err.message });
+  }
+};
+
+restaurantController.validateAdmin = async (req, res, next) => {
+  try {
+    if (req.session?.member?.mb_type === "ADMIN") {
+      req.member = req.session.member;
+      next();
+    } else {
+      throw err;
+    }
+  } catch (err) {
+    console.log("ERROR: cont/validateAdmin");
+    res.redirect("/resto");
   }
 };
 

@@ -1,0 +1,61 @@
+<%-include("includes/header")%>
+    <link rel="stylesheet" href="/CSS/menu.css" type="text/css">
+    <body>
+        <div class="main_container">
+
+            <div class="group_name">
+                <ul class="nav justify-content-center">
+                    <li class="nav-item" style="cursor:pointer;">
+                        <a href="/resto" class="nav-link active">Home</a>
+                    </li>
+                    <li class="nav-item" style="cursor:pointer;">
+                        <a href="/resto/all-restaurants" class="nav-link">AllResto</a>
+                    </li>
+                    <li class="nav-item" style="cursor:pointer;">
+                        <a href="/resto/logout" class="nav-link">Logout</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="restaurant_menu_frame">
+                <div class="restaurant_container">
+                    <div class="resto_table">
+                        <span class="new_dish_txt">
+                            Barcha Oshhonalar Ro'yhati
+                        </span>
+
+                        <table class="table table-sm table-hover">
+                            <thead class="thead-light">
+                                <tr class="thead-light">
+                                    <th scope="col">T/r</th>
+                                    <th scope="col">Oshhona Nomi</th>
+                                    <th scope="col">Oshhona Telfon Raqami</th>
+                                    <th scope="col">Oshhona Top</th>
+                                    <th scope="col">Oshhona Hollati</th>
+                                </tr>
+                            </thead>
+
+                            <tbody style="background-color: white;">
+                                <td><%- 1 %></td>
+                                <td>Texas De Brazil</td>
+                                <td>913071317983</td>
+                                <td style="width:13%;">
+                                    <label class="form-switch">
+                                        <input style="width:50px; padding: 10px;" class="form-check-input mb_top" type="checkbox" >
+                                    </label>
+                                </td >
+                                <td style="width:13%">
+                                    <select  class= "spec_select mb_status">
+                                        <option value="ONPAUSE">ONPAUSE</option>
+                                        <option value="ACTIVE">ACTIVE</option>
+                                        <option value="DELETED">DELETED</option>
+                                    </select>
+                                </td>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+<%-include("includes/footer")%>

@@ -27,6 +27,9 @@ a {
 
 .group_name{
     position: absolute;
+    width:100%;
+    display: flex;
+    justify-content: center;
     top:1%;
     z-index: 10000;
     font-size: xx-large;

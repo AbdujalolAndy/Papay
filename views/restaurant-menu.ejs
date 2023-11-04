@@ -1,25 +1,26 @@
 <%-include('includes/header')%>
-<link rel="stylesheet" href="/CSS/menu.css">
-<body>
-    <div id="main_container">
-        <div class="group_name">
-            <ul class="nav justify-content-center">
-                <li class="nav-item" style="cursor:pointer;">
-                    <a href="/resto" class="nav-link active">Home</a>
-                </li>
-                <li class="nav-item" style="cursor:pointer;">
-                    <a href="/resto/products/menu" class="nav-link">MyResto</a>
-                </li>
-                <li class="nav-item" style="cursor:pointer;">
-                    <a href="/resto/logout" class="nav-link">Logout</a>
-                </li>
-            </ul>
-        </div>
+    <link rel="stylesheet" href="/CSS/menu.css">
 
-        <div class="restaurant_menu_frame">
-            <div class="restaurant_container">
-                <div class="dishes_table">
-                    <span class="new_dish_txt"><%-member.mb_nick.toUpperCase()%> Taomlar Menyusi</span>
+    <body">
+        <div id="main_container">
+            <div class="group_name">
+                <ul class="nav justify-content-center">
+                    <li class="nav-item" style="cursor:pointer;">
+                        <a href="/resto" class="nav-link active">Home</a>
+                    </li>
+                    <li class="nav-item" style="cursor:pointer;">
+                        <a href="/resto/products/menu" class="nav-link">MyResto</a>
+                    </li>
+                    <li class="nav-item" style="cursor:pointer;">
+                        <a href="/resto/logout" class="nav-link">Logout</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="restaurant_menu_frame">
+                <div class="restaurant_container">
+                    <div class="dishes_table">
+                        <span class="new_dish_txt"><%-member.mb_nick.toUpperCase()%> Taomlar Menyusi</span>
                         <table class="table table-bordered table-hover">
                             <thead class="thead-light">
                                 <th scope="col">T/r</th>
@@ -30,215 +31,226 @@
                                 <th scope="col">Taom qoldiq miqdori</th>
                                 <th scope="col">Taom holati</th>
                             </thead>
-                        <% restaurant_data.map((value, key) => { %>
-                            <tbody style="background-color: white;">
-                                <td><%- key+1 %></td>
-                                <td><%- value.product_name %></td>
-                                <td><%- value.product_collection %></td>
-                                <td><%- value.product_collection  === "drink"? value.product_volume : value.product_size %></td>
-                                <td><%- value.product_price %></td>
-                                <td><%- value.product_left_cnt %></td>
-                                <td>
-                                    <select class="spec_select new_product_status" id="<%- value._id %>">
-                                        <option value="PAUSED" <%- value.product_status == "PAUSED" ? "selected": " " %> >PAUSED</option>
-                                        <option value="PROCESS" <%- value.product_status == "PROCESS" ? "selected": " " %> >PROCESS</option>
-                                    </select>
-                                </td>
-                            </tbody>
-                        <% }); %>
+                            <% restaurant_data.map((value, key)=> { %>
+                                <tbody style="background-color: white;">
+                                    <td><%- key+1 %></td>
+                                    <td><%- value.product_name %></td>
+                                    <td><%- value.product_collection %></td>
+                                    <td><%- value.product_collection==="drink" ? value.product_volume :
+                                            value.product_size %></td>
+                                    <td><%- value.product_price %></td>
+                                    <td><%- value.product_left_cnt %></td>
+                                    <td>
+                                        <select class="spec_select new_product_status" id="<%- value._id %>">
+                                            <option value="PAUSED" <%- value.product_status=="PAUSED" ? "selected" : " "
+                                                %> >PAUSED</option>
+                                            <option value="PROCESS" <%- value.product_status=="PROCESS" ? "selected"
+                                                : " " %> >PROCESS</option>
+                                        </select>
+                                    </td>
+                                </tbody>
+                                <% }); %>
                         </table>
 
                         <div class="long_input" style="align-items: flex-end; margin-bottom: 25px;">
                             <button class="btn btn-primary hiding_btn">Taom Qo'shish</button>
                         </div>
-                </div>
-
-                <form action="/resto/products/create" method="POST" onsubmit="return validateForm()"
-                class="dish_container" enctype="multipart/form-data">
-
-                    <div class="long_input" style="align-items: center; margin-bottom: 25px;">
-                        <span class="new_dish_txt">Yangi Taom</span>
                     </div>
 
-                    <div>
+                    <form action="/resto/products/create" method="POST" onsubmit="return validateForm()"
+                        class="dish_container" enctype="multipart/form-data">
+
+                        <div class="long_input" style="align-items: center; margin-bottom: 25px;">
+                            <span class="new_dish_txt">Yangi Taom</span>
+                        </div>
+
+                        <div>
+                            <div class="long_input">
+                                <label for="dish_name">Taom nomi</label>
+                                <input type="text" id="dish_name" placeholder="Taom nomi" name="product_name" />
+                            </div>
+                            <input name="product_status" value="PAUSED" class="product_statsu" hidden>
+                        </div>
+
+                        <div class="half_input_frame">
+                            <div class="half_input">
+                                <label>Taom narhi</label>
+                                <input type="number" id="dish_price" placeholder="Taom Narxi" name="product_price"
+                                    class="product_price" />
+                            </div>
+                            <div class="half_input">
+                                <label>Taom Qoldiq Miqdori</label>
+                                <input type="number" id="dish_left_cnt" placeholder="Taom Miqdori"
+                                    name="product_left_cnt" class="product_left_cnt" />
+                            </div>
+                        </div>
+
+                        <div class="half_input_frame">
+                            <div class="half_input">
+                                <label for="product_collection">Taom Turi</label>
+                                <select name="product_collection" class="product_collection">
+                                    <option value="dish" selected>Taom</option>
+                                    <option value="salad">Salad</option>
+                                    <option value="dessert">Dessert</option>
+                                    <option value="drink">Ichimlik</option>
+                                    <option value="etc">Boshqalar</option>
+                                </select>
+                            </div>
+
+                            <div class="half_input" id="product_size">
+                                <label for="product_size">Taom Hajmi</label>
+                                <select name="product_size" id="product_size">
+                                    <option value="small">Kichkina</option>
+                                    <option value="normal" selected>O'rtacha</option>
+                                    <option value="large">Katta</option>
+                                    <option value="set">Set</option>
+                                </select>
+                            </div>
+
+                            <div class="half_input" id="product_volume" style="display: none;">
+                                <label for="product_volume">Ichimlik Hajmi</label>
+                                <select name="product_volume" id="product_volume">
+                                    <option value="0.5">0.5 litr</option>
+                                    <option value="1" selected>1 litr</option>
+                                    <option value="1.2">1.2 litr</option>
+                                    <option value="1.5">1.5 litr</option>
+                                    <option value="2">2 litr</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="long_input">
-                            <label for="dish_name">Taom nomi</label>
-                            <input type="text" id="dish_name" placeholder="Taom nomi" name = "product_name"/>
-                        </div>
-                        <input name="product_status" value="PAUSED" class="product_statsu" hidden>
-                    </div>
-
-                    <div class="half_input_frame">
-                        <div class="half_input">
-                            <label >Taom narhi</label>
-                            <input type="number" id="dish_price" placeholder="Taom Narxi" name = "product_price" class="product_price"/>
-                        </div>
-                        <div class="half_input">
-                            <label >Taom Qoldiq Miqdori</label>
-                            <input type="number" id="dish_left_cnt" placeholder="Taom Miqdori" name = "product_left_cnt" class="product_left_cnt"/>
-                        </div>
-                    </div>
-
-                    <div class="half_input_frame">
-                        <div class="half_input">
-                            <label for="product_collection">Taom Turi</label>
-                            <select name="product_collection" class="product_collection">
-                                <option value="dish" selected>Taom</option>
-                                <option value="salad">Salad</option>
-                                <option value="dissert">Dessert</option>
-                                <option value="drink">Ichimlik</option>
-                                <option value="etc">Boshqalar</option>
-                            </select>
+                            <label for="product_description">Taom Haqida</label>
+                            <textarea name="product_description" id="product_description" cols="30" rows="10"
+                                placeholder="Taom haqida commentariya"></textarea>
                         </div>
 
-                        <div class="half_input" id="product_size">
-                            <label for="product_size">Taom Hajmi</label>
-                            <select name="product_size" id="product_size">
-                                <option value="small">Kichkina</option>
-                                <option value="normal" selected>O'rtacha</option>
-                                <option value="large">Katta</option>
-                                <option value="set">Set</option>
-                            </select>
-                        </div>
-
-                        <div class="half_input" id="product_volume" style="display: none;">
-                            <label for="product_volume">Ichimlik Hajmi</label>
-                            <select name="product_volume" id="product_volume">
-                                <option value="0.5">0.5 litr</option>
-                                <option value="1" selected>1 litr</option>
-                                <option value="1.2">1.2 litr</option>
-                                <option value="1.5">1.5 litr</option>
-                                <option value="2">2 litr</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="long_input">
-                        <label for="product_description">Taom Haqida</label>
-                        <textarea name="product_description" id="product_description" cols="30" rows="10" placeholder="Taom haqida commentariya"></textarea>
-                    </div>
-
-                    <div class="img_frame">
-                        <label for="">Taom Rasmlari</label>
-                        <div class="media_frame">
-                            <div class="upload_img_box">
-                                <img src="/images/upload.svg" alt="img_1" class="1" id="image_section_1" >
-                                <input type="file" id="file" name = "product_images" class="image_one" onchange="previewFileHandler(this, 1)">
+                        <div class="img_frame">
+                            <label for="">Taom Rasmlari</label>
+                            <div class="media_frame">
+                                <div class="upload_img_box">
+                                    <img src="/images/upload.svg" alt="img_1" class="1" id="image_section_1">
+                                    <input type="file" id="file" name="product_images" class="image_one"
+                                        onchange="previewFileHandler(this, 1)">
+                                </div>
+                                <div class="upload_img_box">
+                                    <img src="/images/upload.svg" alt="img_1" class="2" id="image_section_2">
+                                    <input type="file" id="file" name="product_images" class="image_two"
+                                        onchange="previewFileHandler(this, 2)">
+                                </div>
+                                <div class="upload_img_box">
+                                    <img src="/images/upload.svg" alt="img_1" class="3" id="image_section_3">
+                                    <input type="file" id="file" name="product_images" class="image_three"
+                                        onchange="previewFileHandler(this, 3)">
+                                </div>
+                                <div class="upload_img_box">
+                                    <img src="/images/upload.svg" alt="img_1" class="4" id="image_section_4">
+                                    <input type="file" id="file" name="product_images" class="image_four"
+                                        onchange="previewFileHandler(this, 4)">
+                                </div>
+                                <div class="upload_img_box">
+                                    <img src="/images/upload.svg" alt="img_1" class="5" id="image_section_5">
+                                    <input type="file" id="file" name="product_images" class="image_five"
+                                        onchange="previewFileHandler(this, 5)">
+                                </div>
+                                <input value="<%- member._id%>" name="restaurant_id" class="restaurant_mb_id " hidden>
                             </div>
-                            <div class="upload_img_box">
-                                <img src="/images/upload.svg" alt="img_1" class="2" id="image_section_2" >
-                                <input type="file" id="file" name = "product_images" class="image_two" onchange="previewFileHandler(this, 2)">
-                            </div>
-                            <div class="upload_img_box">
-                                <img src="/images/upload.svg" alt="img_1" class="3" id="image_section_3" >
-                                <input type="file" id="file" name = "product_images" class="image_three" onchange="previewFileHandler(this, 3)">
-                            </div>
-                            <div class="upload_img_box">
-                                <img src="/images/upload.svg" alt="img_1" class="4" id="image_section_4" >
-                                <input type="file" id="file" name = "product_images" class="image_four" onchange="previewFileHandler(this, 4)">
-                            </div>
-                            <div class="upload_img_box">
-                                <img src="/images/upload.svg" alt="img_1" class="5" id="image_section_5" >
-                                <input type="file" id="file" name = "product_images" class="image_five" onchange="previewFileHandler(this, 5)">
-                            </div>
-                            <input value="<%- member._id%>" name="restaurant_id" class="restaurant_mb_id " hidden>
                         </div>
-                    </div>
 
-                    <div class="long_input" style="align-items: flex-end;margin-bottom: 25px;">
-                        <button type="submit" class="btn btn-primary" id="create_product">Chop Etish</button>
-                    </div>
-               
-                </form>
+                        <div class="long_input" style="align-items: flex-end;margin-bottom: 25px;">
+                            <button type="submit" class="btn btn-primary" id="create_product">Chop Etish</button>
+                        </div>
+
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-    <script>
-        $(
-            function(){
-                $(".product_collection").on("change", ()=>{
-                    const selected = $(".product_collection").val();
-                    if(selected === "drink"){
-                        $("#product_volume").show();
-                        $("#product_size").hide();
-                    }else{
-                        $("#product_volume").hide();
-                        $("#product_size").show();
-                    }
-                })
-                $(".hiding_btn").on('click', ()=>{
-                    $(".dish_container").slideToggle(500);
-                    $(".hiding_btn").css("display", "none");
-                })
-
-                //product status changer
-
-                $(".new_product_status").on("change", async(e)=>{
-                    const id = e.target.id;
-                    const product_status = $(`#${id}`).val();
-                    const mb_id = `<%- member._id%>`;
-
-                    try{
-                        const url = `/resto/products/edit/${id}`
-                        const response= await axios.post(url,
-                         {id: id, product_status:product_status});
-                        const result = response.data;
-                        console.log("result:", result);
-
-                        if(result.state == "success"){
-                            alert("success");
-                            window.location.reload();
-                        }else{
-                            alert(result.message)
+        <script>
+            $(
+                function () {
+                    $(".product_collection").on("change", () => {
+                        const selected = $(".product_collection").val();
+                        if (selected === "drink") {
+                            $("#product_volume").show();
+                            $("#product_size").hide();
+                        } else {
+                            $("#product_volume").hide();
+                            $("#product_size").show();
                         }
-                    }catch(err){
-                        console.log("updateChosenProduct err", err)
-                    }
-                })
-            } 
-        )
-        function validateForm(){
-            const restaurant_mb_id = $(".restaurant_mb_id").val(),
-                product_name = $(".product_name").val(),
-                product_size = $(".product_size").val(),
-                product_price = $(".product_price").val(),
-                product_left_cnt = $(".product_left_cnt").val(),
-                product_description = $(".product_description").val(),
-                product_collection = $(".product_collection").val(),
-                product_status = $(".product_status").val()
-            if(
-                restaurant_mb_id == "" ||
-                product_name == "" ||
-                product_price == "" ||
-                product_left_cnt == "" ||
-                product_description == "" ||
-                product_collection  == "" ||
-                product_status == ""
-            ){
-                alert("Iltimos, hamma malumotlarni kiriting!");
-                return false;
-            }else{
-                return true;
-            }
-        }
-        function previewFileHandler(input, order){
-            const image_class_name = input.className;
-            const file = $(`.${image_class_name}`)[0].files[0],
-                fileType = file.type,
-                validImageTypes = ["image/jpg", "image/jpeg", "image/png"];
-            if(!validImageTypes.includes(fileType)){
-                alert('Iltimos ruhsat etilgan formatdagi rasmlarni yuklang: jpg, jpeg, png');
-            }else{
-                if(file){
-                    let reader = new FileReader();
-                    reader.onload = function() {
-                        $(`#image_section_${order}`)
-                        .attr("src", reader.result)
-                    }
-                    reader.readAsDataURL(file)
+                    })
+                    $(".hiding_btn").on('click', () => {
+                        $(".dish_container").slideToggle(500);
+                        $(".hiding_btn").css("display", "none");
+                    })
+
+                    //product status changer
+
+                    $(".new_product_status").on("change", async (e) => {
+                        const id = e.target.id;
+                        const product_status = $(`#${id}`).val();
+                        const mb_id = `<%- member._id%>`;
+
+                        try {
+                            const url = `/resto/products/edit/${id}`
+                            const response = await axios.post(url,
+                                { id: id, product_status: product_status });
+                            const result = response.data;
+                            console.log("result:", result);
+
+                            if (result.state == "success") {
+                                alert("success");
+                                window.location.reload();
+                            } else {
+                                alert(result.message)
+                            }
+                        } catch (err) {
+                            console.log("updateChosenProduct err", err)
+                        }
+                    })
+                }
+            )
+            function validateForm() {
+                const restaurant_mb_id = $(".restaurant_mb_id").val(),
+                    product_name = $(".product_name").val(),
+                    product_size = $(".product_size").val(),
+                    product_price = $(".product_price").val(),
+                    product_left_cnt = $(".product_left_cnt").val(),
+                    product_description = $(".product_description").val(),
+                    product_collection = $(".product_collection").val(),
+                    product_status = $(".product_status").val()
+                if (
+                    restaurant_mb_id == "" ||
+                    product_name == "" ||
+                    product_price == "" ||
+                    product_left_cnt == "" ||
+                    product_description == "" ||
+                    product_collection == "" ||
+                    product_status == ""
+                ) {
+                    alert("Iltimos, hamma malumotlarni kiriting!");
+                    return false;
+                } else {
+                    return true;
                 }
             }
-        }
-    </script>
-</body>
-<%-include('includes/footer')%>
+            function previewFileHandler(input, order) {
+                const image_class_name = input.className;
+                const file = $(`.${image_class_name}`)[0].files[0],
+                    fileType = file.type,
+                    validImageTypes = ["image/jpg", "image/jpeg", "image/png"];
+                if (!validImageTypes.includes(fileType)) {
+                    alert('Iltimos ruhsat etilgan formatdagi rasmlarni yuklang: jpg, jpeg, png');
+                } else {
+                    if (file) {
+                        let reader = new FileReader();
+                        reader.onload = function () {
+                            $(`#image_section_${order}`)
+                                .attr("src", reader.result)
+                        }
+                        reader.readAsDataURL(file)
+                    }
+                }
+            }
+        </script>
+    </body>
+    <%-include('includes/footer')%>

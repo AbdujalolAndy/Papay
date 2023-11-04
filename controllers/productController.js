@@ -26,8 +26,9 @@ productController.addNewProduct = async (req, res) => {
     let data = req.body;
 
     data.product_images = req.files.map((ele) => {
-      return ele.path;
+      return ele.path.replace(/\\/g, "/");
     });
+
 
     const result = await product.addNewProduct(data, req.member);
     const html = `<script>

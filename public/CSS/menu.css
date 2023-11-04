@@ -2,7 +2,7 @@
     position: relative;
     padding-bottom: 80px;
     width: 100%;
-    height: auto;
+    height:auto;
 
     display: flex;
     flex-direction: column;
@@ -30,6 +30,30 @@
     flex-direction: column;
     align-items: center;
 }
+
+.restaurant_container .resto_table{
+    position: relative;
+    width:85%;
+    height: auto;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width:50%;
+    height: 20px;
+}
+
+.switch input{
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
 
 .spec_select{
     position: relative;

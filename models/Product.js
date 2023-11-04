@@ -25,8 +25,8 @@ class Product {
     try {
       data.restaurant_mb_id = shapeIntoMonngooseObjectId(member._id);
 
-      const new_product = new this.productModel(data);
-      const result = await new_product.save();
+
+      const result = await this.productModel.create(data);
 
       assert.ok(result, Definer.product_err1);
       return result;
