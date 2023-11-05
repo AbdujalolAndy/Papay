@@ -1,4 +1,5 @@
 const memberController = module.exports;
+const { HttpStatus } = require("../lib/config");
 const Member = require("../models/Member");
 
 memberController.signup = async (req, res) => {
@@ -8,10 +9,12 @@ memberController.signup = async (req, res) => {
     const member = new Member();
     const new_member = await member.signupData(data);
 
-    res.json({ state: "succeed", data: new_member });
+    res.status(HttpStatus.CREATED).json({ state: "succeed", data: new_member });
   } catch (err) {
     console.log("ERROR: cont/signup", err);
-    res.json({ state: "fail", message: err.message });
+    res
+      .status(HttpStatus.BAD_REQUEST)
+      .json({ state: "fail", message: err.message });
   }
 };
 
@@ -22,14 +25,16 @@ memberController.login = async (req, res) => {
     const member = new Member();
     const new_member = await member.loginData(data);
 
-    res.json({ state: "succeed", data: new_member });
+    res.status(HttpStatus.OK).json({ state: "succeed", data: new_member });
   } catch (err) {
     console.log("ERROR: cont/signup", err);
-    res.json({ state: "fail", message: err.message });
+    res
+      .status(HttpStatus.BAD_REQUEST)
+      .json({ state: "fail", message: err.message });
   }
 };
 
 memberController.logout = (req, res) => {
   console.log("GET const.logout");
-  res.send("Siz LogOut Page dasiz");
+  res.status(HttpStatus.OK).send("Siz LogOut Page dasiz");
 };

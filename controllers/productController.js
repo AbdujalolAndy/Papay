@@ -2,20 +2,7 @@ const productController = module.exports;
 const assert = require("assert");
 const Definer = require("../lib/mistakes");
 const Product = require("../models/Product");
-
-productController.getAllProducts = async (req, res) => {
-  try {
-    console.log("POST: cont/getAllProducts");
-    console.log(req.member);
-    res.end();
-  } catch (err) {
-    console.log("ERROR: cont/getAllProducts, ", err.message);
-    res.json({
-      state: "fail",
-      message: err.message,
-    });
-  }
-};
+const { HttpStatus } = require("../lib/config");
 
 productController.addNewProduct = async (req, res) => {
   try {
@@ -29,15 +16,19 @@ productController.addNewProduct = async (req, res) => {
       return ele.path.replace(/\\/g, "/");
     });
 
-
     const result = await product.addNewProduct(data, req.member);
     const html = `<script>
-                  alert("new product added successfully");
+                  alert("New product added successfully");
                   window.location.replace("/resto/products/menu");
                   </script>`;
-    res.end(html);
+    res.status(HttpStatus.OK).end(html);
   } catch (err) {
     console.log("ERROR, cont/addNewProduct, ", err.message);
+    const html = `<script>
+                    alert("There is a product with this name and size");
+                    window.location.replace("/resto/products/menu");
+                  </script>`;
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).end(html);
   }
 };
 
@@ -52,9 +43,13 @@ productController.updateChosenProduct = async (req, res) => {
       req.member._id
     );
 
-    await res.json({ state: "success", data: result });
+    await res
+      .status(HttpStatus.CREATED)
+      .json({ state: "success", data: result });
   } catch (err) {
     console.log("Error: cont/updateChosenProduct, ", err.message);
-    res.json({ state: "fail", message: err.message });
+    res
+      .status(HttpStatus.BAD_REQUEST)
+      .json({ state: "fail", message: err.message });
   }
 };
