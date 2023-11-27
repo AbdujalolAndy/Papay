@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const router = require("./router");
 const router_BSSR = require("./router_BSSR");
+const cookieParser = require("cookie-parser");
 
 let session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
@@ -15,6 +16,7 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 //2 Session code
 app.use(
