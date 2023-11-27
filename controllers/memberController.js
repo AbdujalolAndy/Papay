@@ -69,3 +69,19 @@ memberController.createToken = async (result) => {
     throw err;
   }
 };
+
+memberController.checkAuthentication = async (req, res) => {
+  try {
+    console.log("cont/checkAuthentication");
+    let token = req.cookies.access_token;
+
+    const member = token ? jwt.verify(token, process.env.SECRET_TOKEN) : null;
+    assert.ok(member, Definer.auth_err2);
+
+    res.status(HttpStatus.OK).json({ state: "success", data: member });
+  } catch (err) {
+    res
+      .status(HttpStatus.BAD_REQUEST)
+      .json({ state: "fail", message: err.message });
+  }
+};
