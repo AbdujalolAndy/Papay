@@ -8,7 +8,12 @@ const memberController = require("./controllers/memberController");
 router.post("/signup", memberController.signup);
 router.post("/login", memberController.login);
 router.get("/logout", memberController.logout);
-router.get("/check-me", memberController.checkAuthentication)
+router.get("/check-me", memberController.checkAuthentication);
+router.get(
+  "/member/:id",
+  memberController.retrieveMember,
+  memberController.getChosenMember
+);
 
 //Other Controllers
 router.get("/menu", (req, res) => {

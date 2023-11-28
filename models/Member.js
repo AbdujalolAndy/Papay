@@ -1,3 +1,4 @@
+const { shapeIntoMonngooseObjectId } = require("../lib/config");
 const Definer = require("../lib/mistakes");
 const MemberSchema = require("../schema/member.control");
 const assert = require("assert");
@@ -41,6 +42,24 @@ class Member {
       ); // Corrected the arguments
       assert.ok(isMatch, Definer.auth_err4);
       return await this.memberModel.findOne({ mb_nick: input.mb_nick });
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async getchosenMemberData(member, member_id) {
+    try {
+      const id = shapeIntoMonngooseObjectId(member_id);
+
+      if (member) {
+        //TO DO
+      }
+
+      const result = await this.memberModel
+        .aggregate([{ $match: { _id: id, mb_status: "ACTIVE" } }])
+        .exec();
+      assert.ok(result, Definer.general_err2);
+      return result[0];
     } catch (err) {
       throw err;
     }

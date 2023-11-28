@@ -47,9 +47,29 @@ memberController.login = async (req, res) => {
   }
 };
 
-memberController.logout = (req, res) => {
-  console.log("GET const.logout");
-  res.status(HttpStatus.OK).send("Siz LogOut Page dasiz");
+memberController.getChosenMember = async (req, res) => {
+  try {
+    console.log("cont/getChosenMember");
+    const id = req.params.id;
+
+    const member = new Member();
+    const result = await member.getchosenMemberData(req.member, id);
+    res.status(HttpStatus.OK).json({ state: "success", data: result });
+  } catch (err) {
+    res
+      .status(HttpStatus.BAD_REQUEST)
+      .json({ state: "fail", message: err.message });
+  }
+};
+
+memberController.logout = async (req, res) => {
+  try {
+    console.log("GET const.logout");
+    res.cookie("access_token", null, { maxAge: 0, httpOnly: true });
+    res
+      .status(HttpStatus.OK)
+      .json({ state: "success", data: "Logout Successfully" });
+  } catch (err) {}
 };
 
 memberController.createToken = async (result) => {
@@ -83,5 +103,16 @@ memberController.checkAuthentication = async (req, res) => {
     res
       .status(HttpStatus.BAD_REQUEST)
       .json({ state: "fail", message: err.message });
+  }
+};
+
+memberController.retrieveMember = async (req, res, next) => {
+  try {
+    const token = req.cookies.access_token;
+    req.member = token ? jwt.verify(token, process.env.SECRET_TOKEN) : null;
+    next();
+  } catch (err) {
+    console.log("cont/retrieveMember");
+    next();
   }
 };
