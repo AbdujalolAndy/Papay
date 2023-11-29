@@ -3,6 +3,7 @@ const Definer = require("../lib/mistakes");
 const MemberSchema = require("../schema/member.control");
 const assert = require("assert");
 const bcrypt = require("bcryptjs");
+const View = require("../models/View");
 
 class Member {
   constructor() {
@@ -52,14 +53,39 @@ class Member {
       const id = shapeIntoMonngooseObjectId(member_id);
 
       if (member) {
-        //TO DO
+        await this.viewChosenItemByMember(member, id, "member");
       }
 
       const result = await this.memberModel
-        .aggregate([{ $match: { _id: id, mb_status: "ACTIVE" } }])
+        .aggregate([
+          { $match: { _id: id, mb_status: "ACTIVE" } },
+          { $unset: "mb_password" },
+        ])
         .exec();
       assert.ok(result, Definer.general_err2);
       return result[0];
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async viewChosenItemByMember(member, view_ref_id, group_type) {
+    try {
+      view_ref_id = shapeIntoMonngooseObjectId(view_ref_id);
+      const mb_id = shapeIntoMonngooseObjectId(member);
+
+      const view = new View(mb_id);
+      const isMatch = await view.validateChosenTarget(view_ref_id, group_type);
+      assert.ok(isMatch, Definer.general_err2);
+
+      const doesExist = await view.checkViewExistence(view_ref_id);
+      console.log("doesExist", doesExist);
+
+      if (!doesExist) {
+        const result = await view.insertMemberView(view_ref_id, group_type);
+        assert.ok(result, Definer.general_err1);
+      }
+      return true;
     } catch (err) {
       throw err;
     }
