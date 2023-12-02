@@ -4,6 +4,27 @@ const Definer = require("../lib/mistakes");
 const Product = require("../models/Product");
 const { HttpStatus } = require("../lib/config");
 
+/**************************************
+ *        REACT RELATED METHODS        *
+ **************************************/
+
+productController.getAllProducts = async (req, res) => {
+  try {
+    console.log("cont/getAllProducts");
+    const product = new Product();
+    const results = await product.getAllProductData(req.member, req.body);
+    res.status(HttpStatus.OK).json({ state: "success", data: results });
+  } catch (err) {
+    res
+      .status(HttpStatus.BAD_REQUEST)
+      .json({ state: "fail", message: err.message });
+  }
+};
+
+/**************************************
+ *        BSSR RELATED METHODS        *
+ **************************************/
+
 productController.addNewProduct = async (req, res) => {
   try {
     console.log("POST: cont/addNewProduct");

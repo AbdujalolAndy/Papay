@@ -82,7 +82,6 @@ memberController.createToken = async (result) => {
     const token = jwt.sign(upload_data, process.env.SECRET_TOKEN, {
       expiresIn: "6h",
     });
-    console.log("token::", token);
     assert.ok(token, Definer.auth_err2);
     return token;
   } catch (err) {

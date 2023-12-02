@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const memberController = require("./controllers/memberController");
-
+const productController = require("./controllers/productController");
 /*************************
  *      Restful API      *
  *************************/
@@ -13,6 +13,13 @@ router.get(
   "/member/:id",
   memberController.retrieveMember,
   memberController.getChosenMember
+);
+
+//Product related routers
+router.get(
+  "/products",
+  memberController.retrieveMember,
+  productController.getAllProducts
 );
 
 //Other Controllers
