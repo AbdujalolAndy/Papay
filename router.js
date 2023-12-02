@@ -23,7 +23,7 @@ router.get(
 );
 
 //Other Controllers
-router.get("/menu", (req, res) => {
+router.post("/menu", (req, res) => {
   res.send("This is Menu Page");
 });
 
