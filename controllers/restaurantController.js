@@ -23,6 +23,21 @@ restaurantController.getRestaurants = async (req, res) => {
   }
 };
 
+restaurantController.getChosenRestaurant = async (req, res) => {
+  try {
+    console.log("GET: cont/getChosenRestaurant");
+    const id = req.params.id;
+    const restaurant = new Restaurant();
+    const result = await restaurant.getChosenRestaurantData(req.member, id);
+    res.status(HttpStatus.OK).json({ state: "success", data: result });
+  } catch (err) {
+    console.log("ERROR: cont/getChosenRestaurant");
+    res
+      .status(HttpStatus.BAD_REQUEST)
+      .json({ state: "fail", message: err.message });
+  }
+};
+
 //BSSR
 restaurantController.home = async (req, res) => {
   try {

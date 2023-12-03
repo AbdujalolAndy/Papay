@@ -1,8 +1,9 @@
-const { shapeIntoMonngooseObjectId } = require("../lib/config");
+const { shapeIntoMonngooseObjectId, HttpStatus } = require("../lib/config");
 const Definer = require("../lib/mistakes");
 const memberControl = require("../schema/member.control");
 const MemberSchema = require("../schema/member.control");
 const assert = require("assert");
+const Member = require("./Member");
 
 class Restaurant {
   constructor() {
@@ -38,6 +39,28 @@ class Restaurant {
       //todo: Check auth member liked the chosen target
 
       const result = await this.memberModel.aggregate(aggregationQuery).exec();
+      assert.ok(result, Definer.general_err1);
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async getChosenRestaurantData(member, id) {
+    try {
+      const restaurant_id = shapeIntoMonngooseObjectId(id);
+      if (member) {
+        const restaurant = new Member();
+        await restaurant.viewChosenItemByMember(
+          member,
+          restaurant_id,
+          "member"
+        );
+      }
+      const result = await this.memberModel.findOne({
+        _id: restaurant_id,
+        mb_status: "ACTIVE",
+      });
       assert.ok(result, Definer.general_err1);
       return result;
     } catch (err) {

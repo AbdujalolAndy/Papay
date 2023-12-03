@@ -39,6 +39,12 @@ router.get(
   restaurantsController.getRestaurants
 );
 
+router.get(
+  "/restaurants/:id",
+  memberController.retrieveMember,
+  restaurantsController.getChosenRestaurant
+);
+
 //Other Controllers
 router.post("/menu", (req, res) => {
   res.send("This is Menu Page");
