@@ -1,19 +1,24 @@
 const router = require("express").Router();
 const memberController = require("./controllers/memberController");
 const productController = require("./controllers/productController");
+const restaurantsController = require("./controllers/restaurantController");
+
 /*************************
  *      Restful API      *
  *************************/
-//Member Controller
-router.post("/signup", memberController.signup);
-router.post("/login", memberController.login);
-router.get("/logout", memberController.logout);
-router.get("/check-me", memberController.checkAuthentication);
-router.get(
-  "/member/:id",
-  memberController.retrieveMember,
-  memberController.getChosenMember
-);
+
+//Member related routers
+router
+  .post("/signup", memberController.signup)
+  .post("/login", memberController.login);
+router
+  .get("/logout", memberController.logout)
+  .get("/check-me", memberController.checkAuthentication)
+  .get(
+    "/member/:id",
+    memberController.retrieveMember,
+    memberController.getChosenMember
+  );
 
 //Product related routers
 router.post(
@@ -21,11 +26,17 @@ router.post(
   memberController.retrieveMember,
   productController.getAllProducts
 );
-
 router.get(
   "/products/:id",
   memberController.retrieveMember,
   productController.getChosenProduct
+);
+
+//Restaurant related routers
+router.get(
+  "/restaurants",
+  memberController.retrieveMember,
+  restaurantsController.getRestaurants
 );
 
 //Other Controllers

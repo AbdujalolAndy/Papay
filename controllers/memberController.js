@@ -16,7 +16,7 @@ memberController.signup = async (req, res) => {
       maxAge: 6 * 3600 * 1000,
       httpOnly: true,
     });
-    res.status(HttpStatus.CREATED).json({ state: "succeed", data: new_member });
+    res.status(HttpStatus.CREATED).json({ state: "success", data: new_member });
   } catch (err) {
     console.log("ERROR: cont/signup", err);
     res
@@ -38,7 +38,7 @@ memberController.login = async (req, res) => {
       httpOnly: true,
     });
 
-    res.status(HttpStatus.OK).json({ state: "succeed", data: result });
+    res.status(HttpStatus.OK).json({ state: "success", data: result });
   } catch (err) {
     console.log("ERROR: cont/signup", err);
     res

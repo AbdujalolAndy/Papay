@@ -62,6 +62,8 @@ class Member {
           { $unset: "mb_password" },
         ])
         .exec();
+
+      //todo: Check auth member liked the chosen member
       assert.ok(result, Definer.general_err2);
       console.log(result);
       return result[0];
@@ -78,7 +80,7 @@ class Member {
         view = new View(mb_id),
         isMatch = await view.validateChosenTarget(view_ref_id, group_type);
       assert.ok(isMatch, Definer.general_err2);
-        //todo: before viewed
+      //todo: before viewed
       const doesExist = await view.checkViewExistence(view_ref_id);
       console.log("doesExist", doesExist);
 

@@ -1,11 +1,29 @@
 const Definer = require("../lib/mistakes");
 const Member = require("../models/Member");
-const restaurantController = module.exports;
 const Product = require("../models/Product");
 const assert = require("assert");
 const Restaurant = require("../models/Restaurant");
 const { HttpStatus } = require("../lib/config");
 
+const restaurantController = module.exports;
+
+//Single Page
+restaurantController.getRestaurants = async (req, res) => {
+  try {
+    console.log("GET: cont/getRestaurants");
+    const data = req.query;
+    const restaurant = new Restaurant();
+    const result = await restaurant.getRestaurantsData(req.member, data);
+    res.status(HttpStatus.OK).json({ state: "success", data: result });
+  } catch (err) {
+    console.log("ERROR: cont/getRestaurants", err.message);
+    res
+      .status(HttpStatus.BAD_REQUEST)
+      .json({ state: "fail", message: err.message });
+  }
+};
+
+//BSSR
 restaurantController.home = async (req, res) => {
   try {
     console.log("GET: cont/home");
@@ -175,7 +193,7 @@ restaurantController.checkSessions = (req, res) => {
   if (req.session.member) {
     res
       .status(HttpStatus.OK)
-      .json({ state: "succeed", data: req.session.member });
+      .json({ state: "success", data: req.session.member });
   } else {
     res
       .status(HttpStatus.UNAUTHORIZED)
