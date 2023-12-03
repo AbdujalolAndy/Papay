@@ -2,6 +2,7 @@ const { shapeIntoMonngooseObjectId } = require("../lib/config");
 const Definer = require("../lib/mistakes");
 const productSchema = require("../schema/product.model");
 const assert = require("assert");
+const Member = require("./Member");
 
 class Product {
   constructor() {
@@ -39,6 +40,27 @@ class Product {
       throw err;
     }
   }
+  async getChosenProductData(member, id) {
+    try {
+      const auth_mb_id = shapeIntoMonngooseObjectId(member?._id),
+        product_id = shapeIntoMonngooseObjectId(id);
+
+      if (member) {
+        const member = new Member();
+        await member.viewChosenItemByMember(auth_mb_id, product_id, "product");
+      }
+
+      const match = {
+          _id: product_id,
+          product_status: "PROCESS",
+        },
+        result = await this.productModel.aggregate([{ $match: match }]);
+      assert.ok(result, Definer.general_err1);
+      return result[0];
+    } catch (err) {
+      throw err;
+    }
+  }
   async getAllProductsDataResto(member) {
     try {
       member._id = shapeIntoMonngooseObjectId(member._id);
@@ -51,7 +73,6 @@ class Product {
       throw err;
     }
   }
-
   async addNewProduct(data, member) {
     try {
       data.restaurant_mb_id = shapeIntoMonngooseObjectId(member._id);

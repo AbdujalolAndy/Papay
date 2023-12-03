@@ -16,10 +16,16 @@ router.get(
 );
 
 //Product related routers
-router.get(
+router.post(
   "/products",
   memberController.retrieveMember,
   productController.getAllProducts
+);
+
+router.get(
+  "/products/:id",
+  memberController.retrieveMember,
+  productController.getChosenProduct
 );
 
 //Other Controllers

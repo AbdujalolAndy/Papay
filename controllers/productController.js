@@ -10,11 +10,27 @@ const { HttpStatus } = require("../lib/config");
 
 productController.getAllProducts = async (req, res) => {
   try {
-    console.log("cont/getAllProducts");
+    console.log("POST: cont/getAllProducts");
     const product = new Product();
-    const results = await product.getAllProductData(req.member, req.body);
-    res.status(HttpStatus.OK).json({ state: "success", data: results });
+    const result = await product.getAllProductData(req.member, req.body);
+    res.status(HttpStatus.OK).json({ state: "success", data: result });
   } catch (err) {
+    console.log("ERROR: cont/getAllProducts");
+    res
+      .status(HttpStatus.BAD_REQUEST)
+      .json({ state: "fail", message: err.message });
+  }
+};
+
+productController.getChosenProduct = async (req, res) => {
+  try {
+    console.log("GET: cont/getChosenProduct");
+    const product_id = req.params.id,
+      product = new Product(),
+      result = await product.getChosenProductData(req.member, product_id);
+    res.status(HttpStatus.OK).json({ state: "success", data: result });
+  } catch (err) {
+    console.log("ERROR: cont/getChosenProduct");
     res
       .status(HttpStatus.BAD_REQUEST)
       .json({ state: "fail", message: err.message });

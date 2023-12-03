@@ -1,20 +1,27 @@
 const ViewModel = require("../schema/view.model");
 const MemberModel = require("../schema/member.control");
+const ProductModel = require("../schema/product.model");
 
 class View {
   constructor(mb_id) {
     this.ViewModel = ViewModel;
     this.memberModel = MemberModel;
+    this.productModel = ProductModel;
     this.mb_id = mb_id;
   }
 
-  async validateChosenTarget(_id, group_type) {
+  async validateChosenTarget(id, group_type) {
     try {
       let result;
       switch (group_type) {
         case "member":
           result = await this.memberModel
-            .aggregate([{ $match: { _id: _id, mb_status: "ACTIVE" } }])
+            .findOne({ mb_id: this.mb_id, mb_status: "ACTIVE" })
+            .exec();
+          break;
+        case "product":
+          result = await this.productModel
+            .findOne({ product_id: id, product_status: "PROCESS" })
             .exec();
           break;
       }
@@ -49,6 +56,14 @@ class View {
             .findByIdAndUpdate({ _id: view_ref_id }, { $inc: { mb_views: 1 } })
             .exec();
           break;
+        case "product":
+          await this.productModel
+            .findByIdAndUpdate(
+              { _id: view_ref_id },
+              { $inc: { product_views: 1 } }
+            )
+            .exec();
+          break;
       }
       return true;
     } catch (err) {
@@ -61,7 +76,7 @@ class View {
         mb_id: this.mb_id,
         view_ref_id: view_ref_id,
       }).exec();
-      return !!view
+      return !!view;
     } catch (err) {
       throw err;
     }

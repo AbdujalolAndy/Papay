@@ -63,6 +63,7 @@ class Member {
         ])
         .exec();
       assert.ok(result, Definer.general_err2);
+      console.log(result);
       return result[0];
     } catch (err) {
       throw err;
@@ -72,12 +73,12 @@ class Member {
   async viewChosenItemByMember(member, view_ref_id, group_type) {
     try {
       view_ref_id = shapeIntoMonngooseObjectId(view_ref_id);
-      const mb_id = shapeIntoMonngooseObjectId(member);
-
-      const view = new View(mb_id);
-      const isMatch = await view.validateChosenTarget(view_ref_id, group_type);
+      const mb_id = shapeIntoMonngooseObjectId(member),
+        //todo: iTem does it exist
+        view = new View(mb_id),
+        isMatch = await view.validateChosenTarget(view_ref_id, group_type);
       assert.ok(isMatch, Definer.general_err2);
-
+        //todo: before viewed
       const doesExist = await view.checkViewExistence(view_ref_id);
       console.log("doesExist", doesExist);
 
