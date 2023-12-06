@@ -76,7 +76,6 @@ class Member {
     try {
       view_ref_id = shapeIntoMonngooseObjectId(view_ref_id);
       const mb_id = shapeIntoMonngooseObjectId(member?._id);
-      console.log(member);
       //todo: iTem does it exist
       const view = new View(mb_id),
         isMatch = await view.validateChosenTarget(view_ref_id, group_type);

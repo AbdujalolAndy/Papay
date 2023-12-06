@@ -16,7 +16,7 @@ const viewSchema = new Schema(
       required: true,
       enum: {
         values: like_view_group_list,
-        message: "not in the list",
+        message: "{VALUE} is not among permitted enum values",
       },
     },
     bo_id: {
