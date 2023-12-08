@@ -2,6 +2,7 @@ const router = require("express").Router();
 const memberController = require("./controllers/memberController");
 const productController = require("./controllers/productController");
 const restaurantsController = require("./controllers/restaurantController");
+const orderController = require("./controllers/orderController");
 
 /*************************
  *      Restful API      *
@@ -43,6 +44,13 @@ router.get(
   "/restaurants/:id",
   memberController.retrieveMember,
   restaurantsController.getChosenRestaurant
+);
+
+//Order related routers
+router.post(
+  "/orders/create",
+  memberController.retrieveMember,
+  orderController.createOrder
 );
 
 //Other Controllers
