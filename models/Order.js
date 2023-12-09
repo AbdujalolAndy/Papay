@@ -74,12 +74,12 @@ class Order {
   async saveOrderItemsData(item, order_id) {
     try {
       order_id = shapeIntoMonngooseObjectId(order_id);
-      item._id = shapeIntoMonngooseObjectId(item._id);
+      item.id = shapeIntoMonngooseObjectId(item.id);
       const order_item = await this.orderItemModel({
         item_quantity: item.quantity,
         item_price: item.price,
         order_id: order_id,
-        product_id: item._id,
+        product_id: item.id,
       });
 
       const result = await order_item.save();
@@ -88,7 +88,41 @@ class Order {
       return "insert";
     } catch (err) {
       console.log(err);
+      console.log(err.message);
       throw new Error(Definer.order_err2);
+    }
+  }
+
+  async getMyOrdersData(member, data) {
+    try {
+      const mb_id = shapeIntoMonngooseObjectId(member._id),
+        order_status = data.status.toUpperCase(),
+        matches = { mb_id: mb_id, order_status: order_status };
+      const result = await this.orderModel
+        .aggregate([
+          { $match: matches },
+          { $sort: { createdAt: -1 } },
+          {
+            $lookup: {
+              from: "orderitems",
+              localField: "_id",
+              foreignField: "order_id",
+              as: "order_items",
+            },
+          },
+          {
+            $lookup: {
+              from: "products",
+              localField: "order_items.product_id",
+              foreignField: "_id",
+              as: "product_data",
+            },
+          },
+        ])
+        .exec();
+      return result;
+    } catch (err) {
+      throw err;
     }
   }
 }

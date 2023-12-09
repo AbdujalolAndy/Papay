@@ -53,6 +53,12 @@ router.post(
   orderController.createOrder
 );
 
+router.get(
+  "/orders",
+  memberController.retrieveMember,
+  orderController.getMyOrders
+);
+
 //Other Controllers
 router.post("/menu", (req, res) => {
   res.send("This is Menu Page");
