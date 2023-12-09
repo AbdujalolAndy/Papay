@@ -3,7 +3,9 @@ const memberController = require("./controllers/memberController");
 const productController = require("./controllers/productController");
 const restaurantsController = require("./controllers/restaurantController");
 const orderController = require("./controllers/orderController");
-
+const communityController = require("./controllers/communityController");
+const uploader_community = require("./utils/upload-multer")("community");
+const uploader_members = require("./utils/upload-multer")("members");
 /*************************
  *      Restful API      *
  *************************/
@@ -65,13 +67,17 @@ router.post(
   orderController.editChosenOrder
 );
 
-//Other Controllers
-router.post("/menu", (req, res) => {
-  res.send("This is Menu Page");
-});
+//Community related routers
+router.post(
+  "/community/image",
+  uploader_community.single("community_image"),
+  communityController.imageInsertion
+);
 
-router.get("/community", (req, res) => {
-  res.send("This is Community Page");
-});
+router.post(
+  "/community/create",
+  memberController.retrieveMember,
+  communityController.createArticle
+);
 
 module.exports = router;
