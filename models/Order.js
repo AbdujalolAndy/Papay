@@ -63,6 +63,7 @@ class Order {
       const pro_list = data.map(async (item) => {
         return await this.saveOrderItemsData(item, order_id);
       });
+
       const results = await Promise.all(pro_list);
       console.log(results);
       return true;
@@ -74,12 +75,12 @@ class Order {
   async saveOrderItemsData(item, order_id) {
     try {
       order_id = shapeIntoMonngooseObjectId(order_id);
-      item.id = shapeIntoMonngooseObjectId(item.id);
+      item._id = shapeIntoMonngooseObjectId(item._id);
       const order_item = await this.orderItemModel({
         item_quantity: item.quantity,
         item_price: item.price,
         order_id: order_id,
-        product_id: item.id,
+        product_id: item._id,
       });
 
       const result = await order_item.save();
