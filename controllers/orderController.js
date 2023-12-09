@@ -1,6 +1,7 @@
 const assert = require("assert");
 const Definer = require("../lib/mistakes");
 const Order = require("../models/Order");
+const { HttpStatus } = require("../lib/config");
 const orderController = module.exports;
 
 orderController.createOrder = async (req, res) => {
@@ -31,5 +32,20 @@ orderController.getMyOrders = async (req, res) => {
   } catch (err) {
     console.log("ERROR: cont/getMyOrders");
     res.json({ state: "fail", message: err.message });
+  }
+};
+
+orderController.editChosenOrder = async (req, res) => {
+  try {
+    console.log("POST: cont/editChosenOrder");
+    assert.ok(req.member, Definer.order_err5);
+    const order = new Order();
+    const result = await order.editChosenOrderData(req.member, req.body);
+    res.status(HttpStatus.OK).json({ state: "success", data: result });
+  } catch (err) {
+    console.log("ERROR: cont/editChosenOrder");
+    res
+      .status(HttpStatus.BAD_REQUEST)
+      .json({ state: "fail", message: err.message });
   }
 };

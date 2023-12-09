@@ -30,7 +30,6 @@ class Order {
         delivery_cost,
         mb_id
       );
-      console.log("order_id::", order_id);
 
       await this.recordOrderItemsData(order_id, data);
 
@@ -64,8 +63,7 @@ class Order {
         return await this.saveOrderItemsData(item, order_id);
       });
 
-      const results = await Promise.all(pro_list);
-      console.log(results);
+      await Promise.all(pro_list);
       return true;
     } catch (err) {
       throw err;
@@ -88,7 +86,6 @@ class Order {
       assert.ok(result, Definer.order_err2);
       return "insert";
     } catch (err) {
-      console.log(err);
       console.log(err.message);
       throw new Error(Definer.order_err2);
     }
@@ -121,6 +118,33 @@ class Order {
           },
         ])
         .exec();
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async editChosenOrderData(member, data) {
+    try {
+      const mb_id = shapeIntoMonngooseObjectId(member._id),
+        order_id = shapeIntoMonngooseObjectId(data.order_id);
+      const result = await this.orderModel
+        .findOneAndUpdate(
+          {
+            mb_id: mb_id,
+            _id: order_id,
+          },
+          {
+            order_status: data.order_status.toUpperCase(),
+          },
+          {
+            runValidators: true,
+            lean: true,
+            returnDocument: "after",
+          }
+        )
+        .exec();
+      assert.ok(result, Definer.order_err3);
       return result;
     } catch (err) {
       throw err;

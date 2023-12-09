@@ -59,6 +59,12 @@ router.get(
   orderController.getMyOrders
 );
 
+router.post(
+  "/orders/edit",
+  memberController.retrieveMember,
+  orderController.editChosenOrder
+);
+
 //Other Controllers
 router.post("/menu", (req, res) => {
   res.send("This is Menu Page");
