@@ -80,4 +80,10 @@ router.post(
   communityController.createArticle
 );
 
+router.get(
+  "/community/articles",
+  memberController.retrieveMember,
+  communityController.getMemberArticles
+);
+
 module.exports = router;
