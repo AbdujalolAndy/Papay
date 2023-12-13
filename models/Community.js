@@ -5,6 +5,7 @@ const {
 } = require("../lib/config");
 const Definer = require("../lib/mistakes");
 const Bo_ArticleModel = require("../schema/bo_article.model");
+const Member = require("./Member");
 
 class Community {
   constructor() {
@@ -86,6 +87,25 @@ class Community {
           },
           { $unwind: "$member_data" },
         ]);
+      assert.ok(result, Definer.article_err3);
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async getChosenArticleData(member, art_id) {
+    try {
+      art_id = shapeIntoMonngooseObjectId(art_id);
+
+      if (member) {
+        const member_obj = new Member();
+        await member_obj.viewChosenItemByMember(member, art_id, "community");
+      }
+
+      const result = await this.bo_articleModel
+        .findOne({ _id: art_id, art_status: "active" })
+        .exec();
       assert.ok(result, Definer.article_err3);
       return result;
     } catch (err) {
