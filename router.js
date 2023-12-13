@@ -86,4 +86,10 @@ router.get(
   communityController.getMemberArticles
 );
 
+router.get(
+  "/community/target",
+  memberController.retrieveMember,
+  communityController.getArticles
+);
+
 module.exports = router;
