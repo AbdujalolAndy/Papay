@@ -20,7 +20,7 @@ class Follow {
       const member_data = this.memberModel.findById({ _id: follow_id }).exec();
       assert.ok(member_data, Definer.general_err2);
 
-      const result = this.createSubcriptionData(follow_id, subscriber_id);
+      const result = await this.createSubcriptionData(follow_id, subscriber_id);
       assert.ok(result, Definer.general_err2);
 
       await this.modifyMemberFollowCounts(follow_id, "subcriber_change", 1);
