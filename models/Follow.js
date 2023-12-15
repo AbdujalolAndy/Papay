@@ -23,9 +23,29 @@ class Follow {
       const result = await this.createSubcriptionData(follow_id, subscriber_id);
       assert.ok(result, Definer.general_err2);
 
-      await this.modifyMemberFollowCounts(follow_id, "subcriber_change", 1);
+      await this.modifyMemberFollowCounts(follow_id, "subscriber_change", 1);
       await this.modifyMemberFollowCounts(subscriber_id, "follow_change", 1);
 
+      return true;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async unsubscribeData(member, data) {
+    try {
+      const subscriber_id = shapeIntoMonngooseObjectId(member._id);
+      const follow_id = shapeIntoMonngooseObjectId(data.mb_id);
+
+      const result = await this.followModel.findOneAndDelete({
+        follow_id: follow_id,
+        subscriber_id: subscriber_id,
+      });
+
+      assert.ok(result, Definer.general_err1);
+
+      this.modifyMemberFollowCounts(follow_id, "subscriber_change", -1);
+      this.modifyMemberFollowCounts(subscriber_id, "follow_change", -1);
       return true;
     } catch (err) {
       throw err;
@@ -54,7 +74,7 @@ class Follow {
             { $inc: { mb_follow_cnt: modifier } }
           )
           .exec();
-      } else if (type === "subcriber_change") {
+      } else if (type === "subscriber_change") {
         await this.memberModel
           .findByIdAndUpdate(
             { _id: mb_id },

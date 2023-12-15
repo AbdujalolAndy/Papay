@@ -106,4 +106,10 @@ router.post(
   followController.subscribe
 );
 
+router.post(
+  "/follow/unsubscribe",
+  memberController.retrieveMember,
+  followController.unsubscribe
+);
+
 module.exports = router;
