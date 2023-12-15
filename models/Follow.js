@@ -86,6 +86,36 @@ class Follow {
       throw err;
     }
   }
+
+  async getMemberFollowingsData(inquery) {
+    try {
+      const subscriber_id = shapeIntoMonngooseObjectId(inquery.mb_id);
+      inquery.limit *= 1;
+      inquery.page *= 1;
+
+      const followings = await this.followModel.aggregate([
+        { $match: { subscriber_id: subscriber_id } },
+        { $sort: { createdAt: -1 } },
+        { $skip: (inquery.page - 1) * inquery.limit },
+        { $limit: inquery.limit },
+        {
+          $lookup: {
+            from: "members",
+            localField: "follow_id",
+            foreignField: "_id",
+            as: "follow_member_data",
+          },
+        },
+        { $unwind: "$follow_member_data" },
+      ]);
+
+      assert.ok(followings[0], Definer.follow_err3);
+
+      return followings;
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 module.exports = Follow;
