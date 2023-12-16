@@ -1,4 +1,7 @@
-const { shapeIntoMonngooseObjectId } = require("../lib/config");
+const {
+  shapeIntoMonngooseObjectId,
+  lookup_auth_member_follow,
+} = require("../lib/config");
 const Definer = require("../lib/mistakes");
 const MemberSchema = require("../schema/member.control");
 const assert = require("assert");
@@ -50,22 +53,23 @@ class Member {
 
   async getchosenMemberData(member, member_id) {
     try {
-      const id = shapeIntoMonngooseObjectId(member_id);
+      const auth_mb_id = shapeIntoMonngooseObjectId(member?._id),
+        id = shapeIntoMonngooseObjectId(member_id),
+        aggregationQue = [
+          { $match: { _id: id, mb_status: "ACTIVE" } },
+          { $unset: "mb_password" },
+        ];
 
       if (member) {
         await this.viewChosenItemByMember(member, id, "member");
+        //todo: liked
+        aggregationQue.push(lookup_auth_member_follow(auth_mb_id, "members"));
       }
 
-      const result = await this.memberModel
-        .aggregate([
-          { $match: { _id: id, mb_status: "ACTIVE" } },
-          { $unset: "mb_password" },
-        ])
-        .exec();
+      const result = await this.memberModel.aggregate(aggregationQue).exec();
 
       //todo: Check auth member liked the chosen member
       assert.ok(result, Definer.general_err2);
-      console.log(result);
       return result[0];
     } catch (err) {
       throw err;
