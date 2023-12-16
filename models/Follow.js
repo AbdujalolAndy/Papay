@@ -112,7 +112,7 @@ class Follow {
         { $unwind: "$follow_member_data" },
       ]);
 
-      assert.ok(followings[0], Definer.follow_err3);
+      assert.ok(followings, Definer.follow_err3);
 
       return followings;
     } catch (err) {
