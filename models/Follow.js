@@ -1,4 +1,7 @@
-const { shapeIntoMonngooseObjectId } = require("../lib/config");
+const {
+  shapeIntoMonngooseObjectId,
+  lookup_auth_member_follow,
+} = require("../lib/config");
 const Definer = require("../lib/mistakes");
 const assert = require("assert");
 const FollowModel = require("../schema/follow.model");
@@ -112,6 +115,37 @@ class Follow {
       assert.ok(followings[0], Definer.follow_err3);
 
       return followings;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async getMembersFollowersData(member, inquery) {
+    try {
+      const follow_id = shapeIntoMonngooseObjectId(inquery.mb_id);
+      inquery.page *= 1;
+      inquery.limit *= 1;
+
+      const aggregation = [
+        { $match: { follow_id: follow_id } },
+        { $sort: { createdAt: -1 } },
+        { $skip: (inquery.page - 1) * inquery.limit },
+        { $limit: inquery.limit },
+        {
+          $lookup: {
+            from: "members",
+            localField: "subscriber_id",
+            foreignField: "_id",
+            as: "subscriber_member_data",
+          },
+        },
+      ];
+      if (member && member._id === inquery.mb_id) {
+        aggregation.push(lookup_auth_member_follow(follow_id));
+      }
+      const result = await this.followModel.aggregate(aggregation).exec();
+      assert.ok(result, Definer.follow_err3);
+      return result;
     } catch (err) {
       throw err;
     }
