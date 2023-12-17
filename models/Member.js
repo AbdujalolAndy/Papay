@@ -1,6 +1,7 @@
 const {
   shapeIntoMonngooseObjectId,
   lookup_auth_member_follow,
+  lookup_auth_member_liked,
 } = require("../lib/config");
 const Definer = require("../lib/mistakes");
 const MemberSchema = require("../schema/member.control");
@@ -63,13 +64,11 @@ class Member {
 
       if (member) {
         await this.viewChosenItemByMember(member, id, "member");
-        //todo: liked
+        aggregationQue.push(lookup_auth_member_liked(auth_mb_id));
         aggregationQue.push(lookup_auth_member_follow(auth_mb_id, "members"));
       }
 
       const result = await this.memberModel.aggregate(aggregationQue).exec();
-
-      //todo: Check auth member liked the chosen member
       assert.ok(result, Definer.general_err2);
       return result[0];
     } catch (err) {

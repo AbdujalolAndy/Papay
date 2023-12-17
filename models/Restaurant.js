@@ -1,4 +1,8 @@
-const { shapeIntoMonngooseObjectId, HttpStatus } = require("../lib/config");
+const {
+  shapeIntoMonngooseObjectId,
+  HttpStatus,
+  lookup_auth_member_liked,
+} = require("../lib/config");
 const Definer = require("../lib/mistakes");
 const memberControl = require("../schema/member.control");
 const MemberSchema = require("../schema/member.control");
@@ -35,9 +39,7 @@ class Restaurant {
       }
       aggregationQuery.push({ $skip: (data.page - 1) * data.limit });
       aggregationQuery.push({ $limit: data.limit });
-
-      //todo: Check auth member liked the chosen target
-
+      aggregationQuery.push(lookup_auth_member_liked(auth_mb_id));
       const result = await this.memberModel.aggregate(aggregationQuery).exec();
       assert.ok(result, Definer.general_err1);
       return result;

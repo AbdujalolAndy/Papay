@@ -2,6 +2,7 @@ const assert = require("assert");
 const {
   shapeIntoMonngooseObjectId,
   board_id_enum_list,
+  lookup_auth_member_liked,
 } = require("../lib/config");
 const Definer = require("../lib/mistakes");
 const Bo_ArticleModel = require("../schema/bo_article.model");
@@ -54,6 +55,7 @@ class Community {
           },
         },
         { $unwind: "$member_data" },
+        lookup_auth_member_liked(auth_mb_id),
       ]);
       assert.ok(result, Definer.article_err2);
 
@@ -86,6 +88,7 @@ class Community {
             },
           },
           { $unwind: "$member_data" },
+          lookup_auth_member_liked(auth_mb_id),
         ]);
       assert.ok(result, Definer.article_err3);
       return result;
