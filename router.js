@@ -14,7 +14,12 @@ const uploader_members = require("./utils/upload-multer")("members");
 //Member related routers
 router
   .post("/signup", memberController.signup)
-  .post("/login", memberController.login);
+  .post("/login", memberController.login)
+  .post(
+    "/member-liken",
+    memberController.retrieveMember,
+    memberController.likeChosenMember
+  );
 router
   .get("/logout", memberController.logout)
   .get("/check-me", memberController.checkAuthentication)
@@ -37,24 +42,30 @@ router.get(
 );
 
 //Restaurant related routers
-router.get(
-  "/restaurants",
-  memberController.retrieveMember,
-  restaurantsController.getRestaurants
-);
-
-router.get(
-  "/restaurants/:id",
-  memberController.retrieveMember,
-  restaurantsController.getChosenRestaurant
-);
+router
+  .get(
+    "/restaurants",
+    memberController.retrieveMember,
+    restaurantsController.getRestaurants
+  )
+  .get(
+    "/restaurants/:id",
+    memberController.retrieveMember,
+    restaurantsController.getChosenRestaurant
+  );
 
 //Order related routers
-router.post(
-  "/orders/create",
-  memberController.retrieveMember,
-  orderController.createOrder
-);
+router
+  .post(
+    "/orders/create",
+    memberController.retrieveMember,
+    orderController.createOrder
+  )
+  .post(
+    "/orders/edit",
+    memberController.retrieveMember,
+    orderController.editChosenOrder
+  );
 
 router.get(
   "/orders",
@@ -62,62 +73,55 @@ router.get(
   orderController.getMyOrders
 );
 
-router.post(
-  "/orders/edit",
-  memberController.retrieveMember,
-  orderController.editChosenOrder
-);
-
 //Community related routers
-router.post(
-  "/community/image",
-  uploader_community.single("community_image"),
-  communityController.imageInsertion
-);
+router
+  .post(
+    "/community/image",
+    uploader_community.single("community_image"),
+    communityController.imageInsertion
+  )
+  .post(
+    "/community/create",
+    memberController.retrieveMember,
+    communityController.createArticle
+  );
 
-router.post(
-  "/community/create",
-  memberController.retrieveMember,
-  communityController.createArticle
-);
-
-router.get(
-  "/community/articles",
-  memberController.retrieveMember,
-  communityController.getMemberArticles
-);
-
-router.get(
-  "/community/target",
-  memberController.retrieveMember,
-  communityController.getArticles
-);
-
-router.get(
-  "/community/single-article/:art_id",
-  memberController.retrieveMember,
-  communityController.getChosenArticle
-);
+router
+  .get(
+    "/community/articles",
+    memberController.retrieveMember,
+    communityController.getMemberArticles
+  )
+  .get(
+    "/community/target",
+    memberController.retrieveMember,
+    communityController.getArticles
+  )
+  .get(
+    "/community/single-article/:art_id",
+    memberController.retrieveMember,
+    communityController.getChosenArticle
+  );
 
 //Follow related routers
-router.post(
-  "/follow/subscribe",
-  memberController.retrieveMember,
-  followController.subscribe
-);
+router
+  .post(
+    "/follow/subscribe",
+    memberController.retrieveMember,
+    followController.subscribe
+  )
+  .post(
+    "/follow/unsubscribe",
+    memberController.retrieveMember,
+    followController.unsubscribe
+  );
 
-router.post(
-  "/follow/unsubscribe",
-  memberController.retrieveMember,
-  followController.unsubscribe
-);
-
-router.get("/follow/followings", followController.getMemberFollowings);
-
-router.get(
-  "/follow/followers",
-  memberController.retrieveMember,
-  followController.getMembersFollowers
-);
+router
+  .get("/follow/followings", followController.getMemberFollowings)
+  .get(
+    "/follow/followers",
+    memberController.retrieveMember,
+    followController.getMembersFollowers
+  );
 
 module.exports = router;

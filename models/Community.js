@@ -29,7 +29,7 @@ class Community {
       return await article.save();
     } catch (MongoDBerr) {
       console.log(MongoDBerr.message);
-      throw new Error(Definer.auth_err1);
+      throw new Error(Definer.db_validation_err1);
     }
   }
 

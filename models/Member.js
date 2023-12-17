@@ -7,6 +7,7 @@ const MemberSchema = require("../schema/member.control");
 const assert = require("assert");
 const bcrypt = require("bcryptjs");
 const View = require("../models/View");
+const Like = require("./Like");
 
 class Member {
   constructor() {
@@ -23,7 +24,7 @@ class Member {
         result = await new_member.save();
       } catch (err) {
         console.log(err.message);
-        throw new Error(Definer.auth_err1);
+        throw new Error(Definer.db_validation_err1);
       }
       result.mb_password = "";
       return result;
@@ -93,6 +94,32 @@ class Member {
         assert.ok(result, Definer.general_err1);
       }
       return true;
+    } catch (err) {
+      throw err;
+    }
+  }
+  async likeChosenMemberData(member, data) {
+    try {
+      const mb_id = shapeIntoMonngooseObjectId(member._id),
+        like_ref_id = shapeIntoMonngooseObjectId(data.mb_id),
+        group_type = data.group_type,
+        like = new Like(mb_id),
+        isvalid = await like.validateTargetItem(like_ref_id, group_type);
+      assert.ok(isvalid, Definer.general_err2);
+      const doesExist = await like.likeChosenItemExistance(
+        like_ref_id,
+        group_type
+      );
+      console.log("doesExist::", doesExist);
+      data = doesExist
+        ? await like.removeChosenItemLike(like_ref_id, group_type)
+        : await like.insertChosenItemLike(like_ref_id, group_type);
+      const result = {
+        mb_id: mb_id,
+        like_ref_id: data.like_ref_id,
+        like_status: doesExist ? 0 : 1,
+      };
+      return result;
     } catch (err) {
       throw err;
     }

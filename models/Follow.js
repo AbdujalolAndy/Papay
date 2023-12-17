@@ -20,7 +20,9 @@ class Follow {
       const follow_id = shapeIntoMonngooseObjectId(data.mb_id);
       const subscriber_id = shapeIntoMonngooseObjectId(member._id);
 
-      const member_data = this.memberModel.findById({ _id: follow_id }).exec();
+      const member_data = await this.memberModel
+        .findById({ _id: follow_id })
+        .exec();
       assert.ok(member_data, Definer.general_err2);
 
       const result = await this.createSubcriptionData(follow_id, subscriber_id);
