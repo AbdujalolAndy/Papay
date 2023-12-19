@@ -100,7 +100,7 @@ class Member {
   async likeChosenMemberData(member, data) {
     try {
       const mb_id = shapeIntoMonngooseObjectId(member._id),
-        like_ref_id = shapeIntoMonngooseObjectId(data.mb_id),
+        like_ref_id = shapeIntoMonngooseObjectId(data.like_ref_id),
         group_type = data.group_type,
         like = new Like(mb_id),
         isvalid = await like.validateTargetItem(like_ref_id, group_type);
