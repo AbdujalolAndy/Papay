@@ -1,6 +1,5 @@
 const communityController = module.exports;
 const assert = require("assert");
-const { HttpStatus } = require("../lib/config");
 const Definer = require("../lib/mistakes");
 const Community = require("../models/Community");
 
@@ -8,12 +7,10 @@ communityController.imageInsertion = async (req, res) => {
   try {
     console.log("POST: CONT/imageInsertion");
     const image_path = req.file.path;
-    res.status(HttpStatus.OK).json({ state: "success", data: image_path });
+    res.json({ state: "success", data: image_path });
   } catch (err) {
     console.log("ERROR: cont/imageInsertion");
-    res
-      .status(HttpStatus.BAD_REQUEST)
-      .json({ state: "fail", message: err.message });
+    res.json({ state: "fail", message: err.message });
   }
 };
 

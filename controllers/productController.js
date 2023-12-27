@@ -13,12 +13,10 @@ productController.getAllProducts = async (req, res) => {
     console.log("POST: cont/getAllProducts");
     const product = new Product();
     const result = await product.getAllProductData(req.member, req.body);
-    res.status(HttpStatus.OK).json({ state: "success", data: result });
+    res.json({ state: "success", data: result });
   } catch (err) {
     console.log("ERROR: cont/getAllProducts");
-    res
-      .status(HttpStatus.BAD_REQUEST)
-      .json({ state: "fail", message: err.message });
+    res.json({ state: "fail", message: err.message });
   }
 };
 
@@ -28,12 +26,10 @@ productController.getChosenProduct = async (req, res) => {
     const product_id = req.params.id,
       product = new Product(),
       result = await product.getChosenProductData(req.member, product_id);
-    res.status(HttpStatus.OK).json({ state: "success", data: result });
+    res.json({ state: "success", data: result });
   } catch (err) {
     console.log("ERROR: cont/getChosenProduct");
-    res
-      .status(HttpStatus.BAD_REQUEST)
-      .json({ state: "fail", message: err.message });
+    res.json({ state: "fail", message: err.message });
   }
 };
 
@@ -58,14 +54,14 @@ productController.addNewProduct = async (req, res) => {
                   alert("New product added successfully");
                   window.location.replace("/resto/products/menu");
                   </script>`;
-    res.status(HttpStatus.OK).end(html);
+    res.end(html);
   } catch (err) {
     console.log("ERROR, cont/addNewProduct, ", err.message);
     const html = `<script>
                     alert("There is a product with this name and size");
                     window.location.replace("/resto/products/menu");
                   </script>`;
-    res.status(HttpStatus.INTERNAL_SERVER_ERROR).end(html);
+    res.end(html);
   }
 };
 
@@ -80,13 +76,9 @@ productController.updateChosenProduct = async (req, res) => {
       req.member._id
     );
 
-    await res
-      .status(HttpStatus.CREATED)
-      .json({ state: "success", data: result });
+    await res.json({ state: "success", data: result });
   } catch (err) {
     console.log("Error: cont/updateChosenProduct, ", err.message);
-    res
-      .status(HttpStatus.BAD_REQUEST)
-      .json({ state: "fail", message: err.message });
+    res.json({ state: "fail", message: err.message });
   }
 };

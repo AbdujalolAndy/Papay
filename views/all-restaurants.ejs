@@ -1,4 +1,4 @@
-<%-include("includes/header")%>
+<%-include("includes /header")%>
     <link rel="stylesheet" href="/CSS/menu.css" type="text/css">
 
     <body>
@@ -74,17 +74,17 @@
                         const id = event.target.id;
                         const mb_top_status = event.target.checked ? "Y" : "N";
 
-                        axios.post(`/resto/all-restaurants/edit`, {id: id, mb_top: mb_top_status,})
-                             .then(response =>{
+                        axios.post(`/resto/all-restaurants/edit`, { id: id, mb_top: mb_top_status, })
+                            .then(response => {
                                 const result = response.data;
                                 console.log("result:", response.data);
-                                if(result.state == "sucess"){
+                                if (result.state == "sucess") {
                                     alert("Successfully updated");
-                                }else{
+                                } else {
                                     alert(result.message);
                                 }
                             })
-                             .catch((err)=>console.log(err.message));
+                            .catch((err) => console.log(err.message));
                     });
 
                     //munipulate restaurants member status features
@@ -93,22 +93,22 @@
                         const mb_status = $(`#${id}.mb_status`).val();
                         console.log("mb_status:", mb_status)
 
-                        axios.post(`/resto/all-restaurants/edit`, {id: id, mb_status: mb_status,})
-                             .then(response =>{
+                        axios.post(`/resto/all-restaurants/edit`, { id: id, mb_status: mb_status, })
+                            .then(response => {
                                 const result = response.data;
                                 console.log("result:", response.data);
-                                if(result.state == "sucess"){
+                                if (result.state == "sucess") {
                                     alert("Successfully updated");
-                                }else{
+                                } else {
                                     alert(result.message);
                                 }
                             })
-                             .catch((err)=>console.log(err.message));
+                            .catch((err) => console.log(err.message));
                     });
 
-                    
+
                 }
             )
         </script>
     </body>
-<%-include("includes/footer")%>
+    <%-include("includes /footer")%>

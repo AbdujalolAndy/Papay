@@ -41,11 +41,11 @@ orderController.editChosenOrder = async (req, res) => {
     assert.ok(req.member, Definer.order_err5);
     const order = new Order();
     const result = await order.editChosenOrderData(req.member, req.body);
-    res.status(HttpStatus.OK).json({ state: "success", data: result });
+    res.json({ state: "success", data: result });
   } catch (err) {
     console.log("ERROR: cont/editChosenOrder");
     res
-      .status(HttpStatus.BAD_REQUEST)
+      
       .json({ state: "fail", message: err.message });
   }
 };
