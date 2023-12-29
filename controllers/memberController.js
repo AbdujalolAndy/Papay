@@ -13,7 +13,7 @@ memberController.signup = async (req, res) => {
       token = await memberController.createToken(new_member);
     res.cookie("access_token", token, {
       maxAge: 6 * 3600 * 1000,
-      httpOnly: true,
+      httpOnly: false,
     });
     res.json({ state: "success", data: new_member });
   } catch (err) {
@@ -32,7 +32,7 @@ memberController.login = async (req, res) => {
     const token = await memberController.createToken(result);
     res.cookie("access_token", token, {
       maxAge: 6 * 3600 * 1000,
-      httpOnly: true,
+      httpOnly: false,
     });
 
     res.json({ state: "success", data: result });
