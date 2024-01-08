@@ -141,6 +141,7 @@ class Follow {
             as: "subscriber_member_data",
           },
         },
+        { $unwind: "$subscriber_member_data" },
       ];
       if (member && member._id === inquery.mb_id) {
         aggregation.push(lookup_auth_member_follow(follow_id, "follows"));
