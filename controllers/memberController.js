@@ -107,6 +107,21 @@ memberController.likeChosenMember = async (req, res) => {
   }
 };
 
+memberController.updateMember = async (req, res) => {
+  try {
+    assert.ok(req.member, Definer.auth_err3);
+    const member = new Member();
+    const result = await member.updateMemberData(
+      req.member,
+      req.body,
+      req.file
+    );
+    res.json({ state: "success", data: result });
+  } catch (err) {
+    console.log(`ERROR: cont/updateMember, ${err.message}`);
+    res.json({ state: "fail", message: err.message });
+  }
+};
 memberController.retrieveMember = async (req, res, next) => {
   try {
     const token = req.cookies.access_token;

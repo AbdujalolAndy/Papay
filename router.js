@@ -19,6 +19,12 @@ router
     "/member-liken",
     memberController.retrieveMember,
     memberController.likeChosenMember
+  )
+  .post(
+    "/member/update",
+    memberController.retrieveMember,
+    uploader_members.single("member_image"),
+    memberController.updateMember
   );
 router
   .get("/logout", memberController.logout)
