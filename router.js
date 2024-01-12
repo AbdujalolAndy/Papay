@@ -22,8 +22,8 @@ router
   )
   .post(
     "/member/update",
+    uploader_members.single("mb_image"),
     memberController.retrieveMember,
-    uploader_members.single("member_image"),
     memberController.updateMember
   );
 router

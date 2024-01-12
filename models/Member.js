@@ -109,7 +109,6 @@ class Member {
         like_ref_id,
         group_type
       );
-      console.log("doesExist::", doesExist);
       data = doesExist
         ? await like.removeChosenItemLike(like_ref_id, group_type)
         : await like.insertChosenItemLike(like_ref_id, group_type);
@@ -133,11 +132,10 @@ class Member {
         mb_description: data.mb_description,
         mb_image: image ? image.path : null,
       };
-      for (let prop in params) if (!prop) delete params[prop];
+      for (let prop in params) if (!params[prop]) delete params[prop];
       const result = await this.memberModel
         .findOneAndUpdate({ _id: id }, params, {
           lean: true,
-          runValidators: true,
           returnDocument: "after",
         })
         .exec();
