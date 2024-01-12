@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const http = require("http");
 const env = require("dotenv");
 const color = require("colors/safe");
+
 
 env.config();
 
@@ -14,8 +14,7 @@ mongoose.connect(
   (err, data) => {
     if (data) {
       console.log(color.bgBlue("Successfully connection to Mongodb Database"));
-      const app = require("./app");
-      const server = http.createServer(app);
+      const server = require("./app")
       const port = process.env.PORT ?? 3010;
       server.listen(
         port,
